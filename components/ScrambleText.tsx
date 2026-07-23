@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useInView } from "framer-motion";
 
 interface ScrambleTextProps {
@@ -22,7 +22,7 @@ export default function ScrambleText({
   const containerRef = useRef<HTMLSpanElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-10% 0px" });
 
-  const scramble = () => {
+  const scramble = useCallback(() => {
     let iteration = 0;
     const interval = setInterval(() => {
       setDisplayText(
@@ -45,7 +45,7 @@ export default function ScrambleText({
 
       iteration += 1 / 2;
     }, scrambleSpeed);
-  };
+  }, [text, scrambleSpeed]);
 
   useEffect(() => {
     if (trigger === "mount") {
@@ -53,7 +53,7 @@ export default function ScrambleText({
     } else if (trigger === "inView" && isInView) {
       scramble();
     }
-  }, [isInView, trigger, text]);
+  }, [isInView, trigger, scramble]);
 
   return (
     <span

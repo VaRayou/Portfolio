@@ -53,13 +53,13 @@ function TypingText({ roles }: { roles: string[] }) {
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const [hasSeenIntro, setHasSeenIntro] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true") {
-      setHasSeenIntro(true);
+  const [hasSeenIntro] = useState(() => {
+    try {
+      return typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
+    } catch {
+      return false;
     }
-  }, []);
+  });
 
   const delayBase = hasSeenIntro ? 0.1 : 4.2;
 
@@ -68,10 +68,9 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Parallax scroll transforms for Hero text vs ID badge
+  // Parallax scroll transforms for Hero text
   const textY = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const badgeY = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
   return (
     <section

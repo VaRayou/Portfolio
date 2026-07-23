@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, ExternalLink, Code, Layers, Sparkles } from "lucide-react";
+import { ExternalLink, Code, Layers, Sparkles } from "lucide-react";
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg

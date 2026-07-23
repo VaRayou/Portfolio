@@ -41,7 +41,7 @@ function Word({
   range,
 }: {
   children: string;
-  progress: any;
+  progress: ReturnType<typeof useScroll>["scrollYProgress"];
   range: [number, number];
 }) {
   const opacity = useTransform(progress, range, [0.2, 1]);

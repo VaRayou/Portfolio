@@ -112,7 +112,7 @@ export default function AIAssistant() {
                   <Bot className="w-4 h-4 text-indigo-400" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-white">Rayou's AI Assistant</h4>
+                  <h4 className="text-xs font-semibold text-white">Rayou&apos;s AI Assistant</h4>
                   <p className="text-[10px] font-mono text-green-400">● Online</p>
                 </div>
               </div>

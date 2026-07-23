@@ -7,7 +7,7 @@ export default function BackButton() {
   const handleClick = () => {
     try {
       sessionStorage.setItem("skipIntroNext", "true");
-    } catch (e) {
+    } catch {
       // Fallback
     }
   };

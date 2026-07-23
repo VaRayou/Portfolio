@@ -93,23 +93,16 @@ export default function IDBadge() {
 
   // Handle Resize and Initial Drop Physics
   useEffect(() => {
-    const sc = getScaleForWidth(window.innerWidth);
-    setScale(sc);
+    const { ax, ay } = getAnchorPos();
+    anchorPosRef.current = { ax, ay };
+    const restX = ax - CARD_W / 2;
+    const restY = ay + getRestYOffset(window.innerWidth);
+    restPosRef.current = { x: restX, y: restY };
 
-    const initPos = () => {
-      const { ax, ay } = getAnchorPos();
-      anchorPosRef.current = { ax, ay };
-      const restX = ax - CARD_W / 2;
-      const restY = ay + getRestYOffset(window.innerWidth);
-      restPosRef.current = { x: restX, y: restY };
-
-      if (!hasDropped.current) {
-        cardX.set(restX);
-        cardY.set(-CARD_H - 100);
-      }
-    };
-
-    initPos();
+    if (!hasDropped.current) {
+      cardX.set(restX);
+      cardY.set(-CARD_H - 100);
+    }
 
     const isFastIntro = typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
     const dropDelay = isFastIntro ? 100 : 4200;
@@ -119,7 +112,6 @@ export default function IDBadge() {
       hasDropped.current = true;
       const { x: restX, y: restY } = restPosRef.current;
 
-      // Drop down animation in exact sync with Navbar and FloatingDock
       framerAnimate(cardY, restY, {
         type: "spring",
         stiffness: 85,
@@ -127,7 +119,6 @@ export default function IDBadge() {
         mass: 1.0,
       });
 
-      // Smooth realistic pendulum sway on X axis
       framerAnimate(cardX, [restX - 30, restX + 18, restX - 6, restX], {
         duration: 0.95,
         ease: [0.16, 1, 0.3, 1],

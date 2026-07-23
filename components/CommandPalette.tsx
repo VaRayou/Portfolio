@@ -164,7 +164,7 @@ export default function CommandPalette() {
                     </div>
                     {filtered
                       .filter((c) => c.category === cat)
-                      .map((cmd, i) => {
+                      .map((cmd) => {
                         const globalIndex = filtered.indexOf(cmd);
                         return (
                           <button

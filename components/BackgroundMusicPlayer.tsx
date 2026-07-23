@@ -1,20 +1,27 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Volume2, VolumeX } from "lucide-react";
 
+function useClientOnly() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
 export default function BackgroundMusicPlayer() {
+  const mounted = useClientOnly();
   const [playing, setPlaying] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    setMounted(true);
-    // Use royalty-free ambient music from CDN
-    audioRef.current = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.25;
+    const audio = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+    audio.loop = true;
+    audio.volume = 0.25;
+    audioRef.current = audio;
 
     const handleToggle = () => {
       setPlaying((p) => {
@@ -35,6 +42,8 @@ export default function BackgroundMusicPlayer() {
     };
   }, []);
 
+  if (!mounted) return null;
+
   const toggle = () => {
     if (playing) {
       audioRef.current?.pause();
@@ -43,8 +52,6 @@ export default function BackgroundMusicPlayer() {
     }
     setPlaying((p) => !p);
   };
-
-  if (!mounted) return null;
 
   return (
     <motion.button

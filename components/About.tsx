@@ -6,19 +6,19 @@ import { Download, ArrowUpRight, Code, Award, Globe, GitBranch, Clock, Music2 } 
 import { useRef, useEffect, useState } from "react";
 import ScrollHighlightText from "@/components/ScrollHighlightText";
 import SplitTextReveal from "@/components/SplitTextReveal";
-import ScrollReveal, { ScrollRevealItem } from "@/components/ScrollReveal";
+import ScrollReveal from "@/components/ScrollReveal";
 
 // Animated count-up stat
 function AnimatedStat({ value, label, icon }: { value: string; label: string; icon: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-50px" });
-  const [display, setDisplay] = useState("0");
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (!inView) return;
     const numeric = parseInt(value.replace(/\D/g, ""), 10);
     const suffix = value.replace(/[0-9]/g, "");
-    if (isNaN(numeric)) { setDisplay(value); return; }
+    if (isNaN(numeric)) return;
     let start = 0;
     const duration = 1500;
     const step = duration / numeric;
@@ -102,45 +102,6 @@ function GitHubGraph() {
         ))}
         <span>More</span>
       </div>
-    </div>
-  );
-}
-
-// Spotify "Now Playing" widget
-function SpotifyWidget() {
-  const [playing, setPlaying] = useState(true);
-  const track = { name: "Midnight City", artist: "M83", album: "Hurry Up, We're Dreaming" };
-
-  return (
-    <div className="bento-cell p-4 md:p-5 col-span-12 sm:col-span-6 lg:col-span-4">
-      <div className="flex items-center gap-2 mb-3">
-        <span className="text-green-400 text-xs font-mono">♫ Spotify</span>
-        {playing && (
-          <div className="flex items-end gap-[2px] h-4 ml-auto">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className="eq-bar" style={{ animationDelay: `${i * 0.1}s` }} />
-            ))}
-          </div>
-        )}
-      </div>
-      <div className="flex items-center gap-3">
-        <div
-          className={`w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex-shrink-0 flex items-center justify-center text-lg ${playing ? "animate-spin" : ""}`}
-          style={playing ? { animationDuration: "8s" } : {}}
-        >
-          🎵
-        </div>
-        <div className="overflow-hidden">
-          <div className="text-sm font-semibold text-white truncate">{track.name}</div>
-          <div className="text-xs text-white/40 truncate">{track.artist}</div>
-        </div>
-      </div>
-      <button
-        onClick={() => setPlaying((p) => !p)}
-        className="mt-3 w-full py-1.5 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-mono hover:bg-green-500/20 transition-colors"
-      >
-        {playing ? "⏸ Pause" : "▶ Play"}
-      </button>
     </div>
   );
 }

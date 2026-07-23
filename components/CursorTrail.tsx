@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface TrailDot {
   id: number;
@@ -21,17 +21,24 @@ const TRAIL_COLORS = [
 export default function CursorTrail() {
   const [dots, setDots] = useState<TrailDot[]>([]);
   const [isHovering, setIsHovering] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const mousePos = useRef({ x: 0, y: 0 });
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const idRef = useRef(0);
   const frameRef = useRef<number>(0);
   const throttleRef = useRef<number>(0);
 
-  useEffect(() => {
-    setMounted(true);
+  const handleMouseOver = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    setIsHovering(
+      target.tagName.toLowerCase() === "button" ||
+        target.tagName.toLowerCase() === "a" ||
+        !!target.closest("button") ||
+        !!target.closest("a")
+    );
+  }, []);
 
+  useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
+      setCursorPos({ x: e.clientX, y: e.clientY });
 
       if (throttleRef.current) {
         cancelAnimationFrame(throttleRef.current);
@@ -48,16 +55,6 @@ export default function CursorTrail() {
 
         setDots((prev) => [...prev.slice(-20), newDot]);
       });
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      setIsHovering(
-        target.tagName.toLowerCase() === "button" ||
-          target.tagName.toLowerCase() === "a" ||
-          !!target.closest("button") ||
-          !!target.closest("a")
-      );
     };
 
     const fade = () => {
@@ -78,9 +75,7 @@ export default function CursorTrail() {
       window.removeEventListener("mouseover", handleMouseOver);
       cancelAnimationFrame(frameRef.current);
     };
-  }, []);
-
-  if (!mounted) return null;
+  }, [handleMouseOver]);
 
   return (
     <>
@@ -105,7 +100,7 @@ export default function CursorTrail() {
       <div
         className="fixed top-0 left-0 pointer-events-none z-[10000] mix-blend-difference"
         style={{
-          transform: `translate(${mousePos.current.x - 5}px, ${mousePos.current.y - 5}px)`,
+          transform: `translate(${cursorPos.x - 5}px, ${cursorPos.y - 5}px)`,
           width: 10,
           height: 10,
           borderRadius: "50%",
@@ -118,7 +113,7 @@ export default function CursorTrail() {
       <div
         className="fixed top-0 left-0 pointer-events-none z-[9999] border border-white/30 rounded-full"
         style={{
-          transform: `translate(${mousePos.current.x - 20}px, ${mousePos.current.y - 20}px)`,
+          transform: `translate(${cursorPos.x - 20}px, ${cursorPos.y - 20}px)`,
           width: isHovering ? 50 : 40,
           height: isHovering ? 50 : 40,
           background: isHovering ? "rgba(255,255,255,0.1)" : "transparent",

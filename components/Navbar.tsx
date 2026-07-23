@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, useScroll } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Menu, X, Command, Cloud, Sun, CloudRain } from "lucide-react";
+import { Menu, X, Command } from "lucide-react";
 
 import { useActiveSection } from "@/hooks/useActiveSection";
 
@@ -30,7 +30,13 @@ aria-hidden="true"
 
 export default function Navbar() {
 const [mobileOpen, setMobileOpen] = useState(false);
-const [hasSeenIntro, setHasSeenIntro] = useState(false);
+const [hasSeenIntro] = useState(() => {
+  try {
+    return typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
+  } catch {
+    return false;
+  }
+});
 const [lanyardOpacity, setLanyardOpacity] = useState(1);
 const activeSectionId = useActiveSection(["home", "about", "projects", "experience", "skills", "contact"]);
 
@@ -39,10 +45,6 @@ const activeLink = links.find(
 )?.name || "Home";
 
 useEffect(() => {
-if (typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true") {
-setHasSeenIntro(true);
-}
-
 const handleScroll = () => {
 const scrollY = window.scrollY;
 const fadeDistance = Math.min(window.innerHeight * 0.5, 450);
@@ -57,7 +59,7 @@ return () => window.removeEventListener("scroll", handleScroll);
 
 const navDelay = hasSeenIntro ? 0.1 : 4.2;
 
-const handleLinkClick = (name: string) => {
+const handleLinkClick = () => {
 setMobileOpen(false);
 };
 
@@ -102,7 +104,7 @@ visibility: lanyardOpacity <= 0.01 ? "hidden" : "visible",
 <Link
 key={link.name}
 href={link.href}
-onClick={() => handleLinkClick(link.name)}
+onClick={handleLinkClick}
 className="relative text-sm font-medium transition-colors"
 >
 <span className={activeLink === link.name ? "text-white" : "text-white/40 hover:text-white/70 transition-colors"}>
@@ -160,7 +162,7 @@ transition={{ delay: i * 0.08 }}
 >
 <Link
 href={link.href}
-onClick={() => handleLinkClick(link.name)}
+onClick={handleLinkClick}
 className={`text-3xl font-heading font-bold transition-colors ${
 activeLink === link.name ? "text-white" : "text-white/30 hover:text-white/60"
 }`}

@@ -6,49 +6,51 @@ import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import { useReducedMotion as useFramerReducedMotion } from "framer-motion";
 
+function seededRandom(seed: number) {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+
 function ParticleConstellation() {
   const pointsRef = useRef<THREE.Points>(null!);
   const bgPointsRef = useRef<THREE.Points>(null!);
   const accentPointsRef = useRef<THREE.Points>(null!);
   const shouldReduceMotion = useFramerReducedMotion();
 
-  // 1. Primary Cyan/Sky Starfield
   const positions = useMemo(() => {
     const count = 3500;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 14;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      pos[i * 3] = (seededRandom(i * 3) - 0.5) * 14;
+      pos[i * 3 + 1] = (seededRandom(i * 3 + 1) - 0.5) * 14;
+      pos[i * 3 + 2] = (seededRandom(i * 3 + 2) - 0.5) * 10;
     }
     return pos;
   }, []);
 
-  // 2. Amethyst/Purple Cosmic Dust
   const bgPositions = useMemo(() => {
     const count = 2500;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 14 - 2;
+      pos[i * 3] = (seededRandom(i * 3 + 10000) - 0.5) * 20;
+      pos[i * 3 + 1] = (seededRandom(i * 3 + 10001) - 0.5) * 20;
+      pos[i * 3 + 2] = (seededRandom(i * 3 + 10002) - 0.5) * 14 - 2;
     }
     return pos;
   }, []);
 
-  // 3. Electric Magenta Glowing Nodes
   const accentPositions = useMemo(() => {
     const count = 800;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 8 + 1;
+      pos[i * 3] = (seededRandom(i * 3 + 20000) - 0.5) * 12;
+      pos[i * 3 + 1] = (seededRandom(i * 3 + 20001) - 0.5) * 12;
+      pos[i * 3 + 2] = (seededRandom(i * 3 + 20002) - 0.5) * 8 + 1;
     }
     return pos;
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
     if (pointsRef.current) {
@@ -56,7 +58,6 @@ function ParticleConstellation() {
       pointsRef.current.rotation.y = time * speed * 0.3;
       pointsRef.current.rotation.x = Math.sin(time * 0.1) * 0.08;
 
-      // Smooth mouse parallax shift
       const targetX = state.pointer.x * 0.3;
       const targetY = state.pointer.y * 0.3;
 
@@ -77,7 +78,6 @@ function ParticleConstellation() {
 
   return (
     <group>
-      {/* Primary white starfield */}
       <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
@@ -90,7 +90,6 @@ function ParticleConstellation() {
         />
       </Points>
 
-      {/* Secondary slate cosmic dust */}
       <Points ref={bgPointsRef} positions={bgPositions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
@@ -103,7 +102,6 @@ function ParticleConstellation() {
         />
       </Points>
 
-      {/* Glowing subtle white highlights */}
       <Points ref={accentPointsRef} positions={accentPositions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
@@ -135,4 +133,3 @@ export default function ThreeBackground() {
     </div>
   );
 }
-

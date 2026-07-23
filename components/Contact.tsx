@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import portfolioData from "@/data/portfolio.json";
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react";
 import { useState, useRef } from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import ScrambleText from "@/components/ScrambleText";
 import ScrollReveal from "@/components/ScrollReveal";

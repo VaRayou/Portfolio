@@ -8,15 +8,21 @@ const line1Words = "WELCOME TO MY".split(" ");
 const line2Words = "PORTFOLIO WEBSITE".split(" ");
 
 export default function Intro() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    try {
+      if (typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true") {
+        sessionStorage.removeItem("skipIntroNext");
+        return false;
+      }
+    } catch {
+      // Fallback for private browsing
+    }
+    return true;
+  });
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true") {
-      sessionStorage.removeItem("skipIntroNext");
-      setIsLoading(false);
-      return;
-    }
+    if (!isLoading) return;
 
     document.body.style.overflow = "hidden";
 
@@ -33,7 +39,7 @@ export default function Intro() {
       setIsLoading(false);
       try {
         sessionStorage.setItem("hasSeenIntro", "true");
-      } catch (e) {
+      } catch {
         // Fallback for private browsing
       }
       document.body.style.overflow = "";
@@ -44,7 +50,7 @@ export default function Intro() {
       controls.stop();
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [isLoading]);
 
   if (!isLoading) return null;
 
