@@ -1,0 +1,130 @@
+{
+  "personal": {
+    "name": "RAYOU VA",
+    "role": "Senior Frontend Engineer & UI/UX Designer",
+    "shortDescription": "I craft award-winning digital experiences blending high-end design with robust engineering. Specialized in React, Next.js, and WebGL.",
+    "availability": "Available for new opportunities",
+    "stats": [
+      { "label": "Years Experience", "value": "8+" },
+      { "label": "Projects Completed", "value": "40+" },
+      { "label": "Awards Won", "value": "12" },
+      { "label": "Happy Clients", "value": "30+" }
+    ]
+  },
+  "socials": {
+    "email": "vayouk@gmail.com",
+    "phone": "+885 12 345 678",
+    "location": "Phnom Penh, Cambodia",
+    "linkedin": "https://linkedin.com",
+    "github": "https://github.com",
+    "twitter": "https://twitter.com",
+    "instagram": "https://instagram.com"
+  },
+  "about": {
+    "heading": "Bridging the gap between design and engineering.",
+    "story": "With a background in traditional graphic design and a passion for coding, I found my sweet spot in frontend development. I don't just build websites; I create digital products that feel alive.",
+    "mission": "To elevate the standard of web interfaces globally.",
+    "vision": "A web where every interaction brings joy and serves a clear purpose."
+  },
+  "skills": [
+    "Next.js", "React", "TypeScript", "TailwindCSS", "Framer Motion", "GSAP", "Three.js", "Node.js", "Python", "Supabase", "GraphQL", "Figma"
+  ],
+  "experience": [
+    {
+      "id": "exp1",
+      "company": "Apple",
+      "role": "Senior Frontend Engineer",
+      "period": "2021 - Present",
+      "description": "Leading the frontend architecture for internal design tools. Reduced load times by 40% and established a unified animation system across 5 products.",
+      "technologies": ["React", "TypeScript", "Framer Motion", "WebGL"]
+    },
+    {
+      "id": "exp2",
+      "company": "Stripe",
+      "role": "UI Engineer",
+      "period": "2018 - 2021",
+      "description": "Developed high-performance landing pages and interactive payment flows. Contributed to the core component library used by millions.",
+      "technologies": ["Next.js", "Styled Components", "GSAP"]
+    },
+    {
+      "id": "exp3",
+      "company": "Linear",
+      "role": "Frontend Developer",
+      "period": "2016 - 2018",
+      "description": "Built the initial marketing site with a focus on keyboard accessibility and dark mode aesthetics.",
+      "technologies": ["React", "CSS Modules"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj1",
+      "title": "Quantum Dashboard",
+      "category": "Web Application",
+      "year": "2023",
+      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070",
+      "description": "A high-performance analytics dashboard featuring real-time data visualization and a custom 3D globe component.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Next.js", "Three.js", "TailwindCSS"]
+    },
+    {
+      "id": "proj2",
+      "title": "Brand Identity & Poster Design",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=2070",
+      "description": "Creative brand identity package, social media poster design, typography, and vector logo design for modern branding.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Photoshop", "Illustrator", "Figma", "Branding"]
+    },
+    {
+      "id": "proj3",
+      "title": "Cisco Network Architecture",
+      "category": "Networking",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=2070",
+      "description": "Enterprise network configuration, VLAN routing, firewall security, and packet tracing topology design.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Cisco Packet Tracer", "VLAN", "Routing & Switching", "Security"]
+    },
+    {
+      "id": "proj4",
+      "title": "UI/UX & Motion Graphics Suite",
+      "category": "Graphic Design",
+      "year": "2026",
+      "image": "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=2070",
+      "description": "Modern vector design assets, visual mockups, aesthetic typography layouts, and logo animation concepts.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Figma", "Illustrator", "After Effects", "UI/UX"]
+    }
+  ],
+  "certificates": [
+    {
+      "id": "cert1",
+      "title": "Frontend Web Development",
+      "issuer": "Meta",
+      "date": "2024",
+      "image": "/coverface.JPG",
+      "description": "Professional certificate covering modern frontend development with React, responsive design, and testing."
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "test1",
+      "name": "Sarah Connor",
+      "role": "Product Lead at Vercel",
+      "text": "Jane is an exceptional engineer. She doesn't just write code; she crafts experiences. Her attention to detail is unmatched in the industry.",
+      "avatar": "https://i.pravatar.cc/150?u=sarah"
+    },
+    {
+      "id": "test2",
+      "name": "David Miller",
+      "role": "Founder at Cuberto",
+      "text": "Working with Jane elevated our entire product. Her deep understanding of animations and performance made the impossible possible.",
+      "avatar": "https://i.pravatar.cc/150?u=david"
+    }
+  ]
+}
