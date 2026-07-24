@@ -178,20 +178,24 @@ export default function Projects() {
                       >
                         <Card3D>
                           <div className="glass-card rounded-3xl p-4 flex flex-col group hover:border-white/20 transition-all duration-300 h-full">
-                            {/* Image */}
-                            <div className="relative aspect-video w-full rounded-2xl overflow-hidden mb-5 bg-black">
+                            {/* Thumbnail Preview Container */}
+                            <div className="relative w-full h-52 sm:h-60 rounded-2xl overflow-hidden mb-5 bg-[#09090c] border border-white/[0.08] p-3 flex items-center justify-center group-hover:border-white/20 transition-all duration-300">
+                              {/* Background ambient canvas glow */}
+                              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.035)_0%,transparent_70%)] pointer-events-none" />
+                              
                               <Image
                                 src={project.image}
                                 alt={project.title}
                                 fill
-                                className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                className="object-contain p-1 opacity-90 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500 drop-shadow-md"
                               />
                               {/* Category badge */}
-                              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-white/70 border border-white/10">
+                              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-[10px] font-mono text-white/80 border border-white/10 z-10">
                                 {project.category}
                               </div>
                               {/* Year badge */}
-                              <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-white/50">
+                              <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md text-[10px] font-mono text-white/60 border border-white/10 z-10">
                                 {project.year}
                               </div>
                             </div>
@@ -267,14 +271,16 @@ export default function Projects() {
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="glass-card rounded-3xl p-4 flex flex-col group hover:border-white/15 transition-all duration-300"
                 >
-                  <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden mb-5 bg-black">
+                  <div className="relative w-full h-48 sm:h-52 rounded-2xl overflow-hidden mb-5 bg-[#09090c] border border-white/[0.08] p-3 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.035)_0%,transparent_70%)] pointer-events-none" />
                     <Image
                       src={cert.image}
                       alt={cert.title}
                       fill
-                      className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-contain p-1 opacity-90 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500 drop-shadow-md"
                     />
-                    <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/60 backdrop-blur-sm text-[10px] font-mono text-white/40">
+                    <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-black/75 backdrop-blur-md text-[10px] font-mono text-white/60 border border-white/10 z-10">
                       {cert.date}
                     </div>
                   </div>

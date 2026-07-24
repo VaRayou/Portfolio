@@ -5,17 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bot, X, Send, Minimize2, Maximize2 } from "lucide-react";
 
 const RESPONSES: Record<string, string> = {
-  default: "I'm Rayou Va's AI assistant. Ask me about skills, projects, or how to get in touch!",
-  hi: "Hey there! 👋 I'm the portfolio AI. What would you like to know about Rayou Va?",
-  hello: "Hello! Welcome to Rayou Va's portfolio. Feel free to ask me anything!",
-  skills: "Rayou Va is skilled in React, Next.js, TypeScript, TailwindCSS, Framer Motion, GSAP, Three.js, Node.js, and more!",
+  default: "I'm AkiraUshi Aki's AI assistant. Ask me about skills, projects, or how to get in touch!",
+  hi: "Hey there! 👋 I'm the portfolio AI. What would you like to know about AkiraUshi Aki?",
+  hello: "Hello! Welcome to AkiraUshi Aki's portfolio. Feel free to ask me anything!",
+  skills: "AkiraUshi Aki is skilled in React, Next.js, TypeScript, TailwindCSS, Framer Motion, GSAP, Three.js, Node.js, and more!",
   projects: "Check out the Projects section! You'll find work like Quantum Dashboard, Aura E-Commerce, and Neon Wallet.",
-  contact: "You can reach Rayou Va via the Contact form below, or head to the Contact section. Email is always welcome!",
-  experience: "Rayou Va has worked at top companies including Apple, Stripe, and Linear — building world-class frontend experiences.",
-  hire: "Rayou Va is available for freelance and full-time opportunities! Scroll to the Contact section or press Ctrl+K to quickly navigate.",
+  contact: "You can reach AkiraUshi Aki via the Contact form below, or head to the Contact section. Email is always welcome!",
+  experience: "AkiraUshi Aki has worked at top companies including Apple, Stripe, and Linear — building world-class frontend experiences.",
+  hire: "AkiraUshi Aki is available for freelance and full-time opportunities! Scroll to the Contact section or press Ctrl+K to quickly navigate.",
   tech: "The tech stack includes Next.js 16, React 19, TypeScript, TailwindCSS v4, Framer Motion, GSAP, and Three.js!",
   github: "You can find the GitHub profile linked in the dock at the bottom of the page!",
-  about: "Rayou Va is a Fresh Graduate with a passion for frontend development, creating clean, modern, and visually stunning digital experiences."
+  about: "AkiraUshi Aki is a Fresh Graduate with a passion for frontend development, creating clean, modern, and visually stunning digital experiences."
 };
 
 function getBotReply(input: string): string {
@@ -112,7 +112,7 @@ export default function AIAssistant() {
                   <Bot className="w-4 h-4 text-indigo-400" />
                 </div>
                 <div>
-                  <h4 className="text-xs font-semibold text-white">Rayou&apos;s AI Assistant</h4>
+                  <h4 className="text-xs font-semibold text-white">AkiraUshi&apos;s AI Assistant</h4>
                   <p className="text-[10px] font-mono text-green-400">● Online</p>
                 </div>
               </div>

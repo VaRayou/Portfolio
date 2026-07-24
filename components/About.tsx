@@ -147,7 +147,7 @@ export default function About() {
             </div>
             
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black leading-[1.1] tracking-tighter">
-              <SplitTextReveal text="Rayou Va" mode="chars" stagger={0.05} gradient />
+              <SplitTextReveal text="Akira Ushi" mode="chars" stagger={0.05} gradient />
             </h2>
             
             <div className="mt-4 max-w-md mx-auto lg:mx-0">

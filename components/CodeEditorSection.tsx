@@ -102,7 +102,7 @@ export default function CodeEditorSection() {
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
           {/* Left: text */}
-          <ScrollReveal direction="left" duration={0.8} className="order-2 lg:order-1">
+          <ScrollReveal direction="left" duration={0.8} className="order-1 lg:order-1">
             <div className="text-xs font-mono tracking-[0.3em] text-white/30 uppercase mb-4">
               CRAFTED IN CODE
             </div>
@@ -152,7 +152,7 @@ export default function CodeEditorSection() {
           {/* Right: code editor */}
           <motion.div
             style={{ rotateX: editorRotateX, y: editorY, perspective: 1000 }}
-            className="code-editor-window order-1 lg:order-2 shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-white/10"
+            className="code-editor-window order-2 lg:order-2 shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-white/10"
           >
             {/* Title bar */}
             <div className="code-editor-titlebar">

@@ -1,21 +1,21 @@
 {
   "personal": {
-    "name": "RAYOU VA",
-    "role": "Senior Frontend Engineer & UI/UX Designer",
-    "shortDescription": "I craft award-winning digital experiences blending high-end design with robust engineering. Specialized in React, Next.js, and WebGL.",
+    "name": "AKIRAUSHI",
+    "role": "Senior Frontend Developer & Graphic Designer",
+    "shortDescription": "I am a passionate frontend developer and graphic designer with a strong background in creating visually appealing and user-friendly web applications. With over 8 years of experience, I specialize in building responsive, high-performance websites and digital products that leave a lasting impression.",
     "availability": "Available for new opportunities",
     "stats": [
-      { "label": "Years Experience", "value": "8+" },
+      { "label": "Years Experience", "value": "1+" },
       { "label": "Projects Completed", "value": "40+" },
-      { "label": "Awards Won", "value": "12" },
-      { "label": "Happy Clients", "value": "30+" }
+      { "label": "Awards Won", "value": "not yet" },
+      { "label": "Happy Clients", "value": "20+" }
     ]
   },
   "socials": {
     "email": "vayouk@gmail.com",
     "phone": "+885 12 345 678",
     "location": "Phnom Penh, Cambodia",
-    "linkedin": "https://linkedin.com",
+    "Facebook": "https://www.facebook.com/share/1EFKWRTs42/?mibextid=wwXIfr",
     "github": "https://github.com",
     "twitter": "https://twitter.com",
     "instagram": "https://instagram.com"
@@ -33,9 +33,9 @@
     {
       "id": "exp1",
       "company": "Apple",
-      "role": "Senior Frontend Engineer",
+      "role": "Senior Frontend Developer & Graphic Designer & Networking",
       "period": "2021 - Present",
-      "description": "Leading the frontend architecture for internal design tools. Reduced load times by 40% and established a unified animation system across 5 products.",
+      "description": "Leading the frontend team in building immersive web experiences for Apple products. Implemented advanced animations and 3D visualizations to enhance user engagement.",
       "technologies": ["React", "TypeScript", "Framer Motion", "WebGL"]
     },
     {
@@ -58,21 +58,21 @@
   "projects": [
     {
       "id": "proj1",
-      "title": "Quantum Dashboard",
+      "title": "KhmerNews",
       "category": "Web Application",
       "year": "2023",
-      "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2070",
+      "image": "/khmernews.png",
       "description": "A high-performance analytics dashboard featuring real-time data visualization and a custom 3D globe component.",
-      "liveDemo": "https://example.com",
+      "liveDemo": "https://khmer-news.onrender.com",
       "github": "https://github.com",
-      "technologies": ["Next.js", "Three.js", "TailwindCSS"]
+      "technologies": ["Php", "Bootstrap", "TailwindCSS"]
     },
     {
       "id": "proj2",
-      "title": "Brand Identity & Poster Design",
+      "title": "Khmer Events & Poster Design",
       "category": "Graphic Design",
       "year": "2025",
-      "image": "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=2070",
+      "image": "/newyearpos.png",
       "description": "Creative brand identity package, social media poster design, typography, and vector logo design for modern branding.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
@@ -80,25 +80,278 @@
     },
     {
       "id": "proj3",
-      "title": "Cisco Network Architecture",
+      "title": "Mikrotik Network configuration ",
       "category": "Networking",
       "year": "2025",
-      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=2070",
+      "image": "/network.png",
       "description": "Enterprise network configuration, VLAN routing, firewall security, and packet tracing topology design.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Cisco Packet Tracer", "VLAN", "Routing & Switching", "Security"]
+      "technologies": ["Mikrotik", "VLAN", "Routing & Switching", "Security"]
     },
     {
       "id": "proj4",
       "title": "UI/UX & Motion Graphics Suite",
       "category": "Graphic Design",
       "year": "2026",
-      "image": "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&q=80&w=2070",
+      "image": "/uidesign.png",
       "description": "Modern vector design assets, visual mockups, aesthetic typography layouts, and logo animation concepts.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
       "technologies": ["Figma", "Illustrator", "After Effects", "UI/UX"]
+    },
+    {
+      "id": "proj5",
+      "title": "Portfolio Website",
+      "category": "Web Application",
+      "year": "2025",
+      "image": "/portfolioweb.png",
+      "description": "A modern, responsive portfolio website showcasing my work and skills.",
+      "liveDemo": "https://portfolio2-chi-swart.vercel.app/",
+      "github": "https://github.com",
+      "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"]
+    },
+    {
+      "id": "proj6",
+      "title": "AI Content Studio & Automation",
+      "category": "Web Application",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
+      "description": "AI-powered creative assistant for automated copywriting, image generation, and social media scheduling.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["React", "Next.js", "OpenAI API", "Supabase"]
+    },
+    {
+      "id": "proj7",
+      "title": "Nexus E-Commerce Platform",
+      "category": "Web Application",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200",
+      "description": "Ultra-fast headless e-commerce store with instant search indexing, Stripe Checkout, and inventory tracking.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Next.js", "Stripe", "Zustand", "TailwindCSS"]
+    },
+    {
+      "id": "proj8",
+      "title": "SaaS Analytics & Workspace Portal",
+      "category": "Web Application",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=1200",
+      "description": "Multi-tenant workspace application featuring team collaboration tools, custom data pipelines, and dark mode UI.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["React", "TypeScript", "GraphQL", "TailwindCSS"]
+    },
+    {
+      "id": "proj9",
+      "title": "Caffee Poster",
+      "category": "Graphic Design",
+      "year": "2026",
+      "image": "/coffee.png",
+      "description": "Futuristic neon concert poster design featuring custom Japanese typography, lighting effects, and vector graphics.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Photoshop", "Illustrator", "Typography"]
+    },
+    {
+      "id": "proj10",
+      "title": "Khmer calendar design",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "/calender.png",
+      "description": "Creative calendar design with 3D renders, custom illustrations, and interactive PDF layouts for print and digital distribution.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["InDesign", "Photoshop", "Branding"]
+    },
+    {
+      "id": "proj11",
+      "title": "Geometric Abstract Brand Identity",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "/promotion.png",
+      "description": "Bold corporate identity suite including business cards, letterheads, brand guidelines, and vector logo lockups.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Illustrator", "Photoshop", "Vector Art"]
+    },
+    {
+      "id": "proj12",
+      "title": "3d Motion Graphics ",
+      "category": "Graphic Design",
+      "year": "2026",
+      "image": "/orangeposblander.png",
+      "description": "High-energy kinetic typography and product 3D animation bumpers created for digital broadcast campaigns.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Blander",  "Motion Design"]
+    },
+    {
+      "id": "proj13",
+      "title": "Logo Design",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "/logopos.png",
+      "description": "80s inspired album art featuring wireframe grids, chromatic aberration, and vintage halftone textures.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Photoshop", "Illustrator", "Retro Art"]
+    },
+    {
+      "id": "proj14",
+      "title": "Logo Design",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "/seteclogo.png",
+      "description": "Creative 3D presentation deck for a mobile application showcasing interactive screens and volumetric lighting.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Illustrator", "Photoshop", "UI Design"]
+    },
+    {
+      "id": "proj15",
+      "title": "Super star design ",
+      "category": "Graphic Design",
+      "year": "2026",
+      "image": "/vd.png",
+      "description": "High-fidelity UI component design system featuring glassmorphic cards, custom iconography, and micro-interactions.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Figma", "UI/UX", "Design System"]
+    },
+    {
+      "id": "proj16",
+      "title": "Pagoda Even",
+      "category": "Graphic Design",
+      "year": "2024",
+      "image": "/pagodaeven.png",
+      "description": "Editorial print and digital magazine spread featuring asymmetrical grid systems and expressive typography.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["InDesign", "Photoshop"]
+    },
+    {
+      "id": "proj17",
+      "title": "Magazine",
+      "category": "Graphic Design",
+      "year": "2025",
+      "image": "/magazin.png",
+      "description": "Action-packed promotional graphics, social media key art, and stream overlay templates for esports tournaments.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Photoshop", "Indesign"]
+    },
+    {
+      "id": "proj18",
+      "title": "Drink Poster",
+      "category": "Graphic Design",
+      "year": "2026",
+      "image": "/drinkpos.png",
+      "description": "Bespoke bottle label design featuring gold foil stamping, tactile UV varnish, and custom monogram logo.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": [ "Photoshop"]
+    },
+    {
+      "id": "proj19",
+      "title": "Dhcp Relay & Inter-VLAN Routing",
+      "category": "Networking",
+      "year": "2025",
+      "image": "/dhcprelay.png",
+      "description": "Enterprise network configuration with DHCP relay setup, inter-VLAN routing, and switch port security policies.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Mikrotik", "VLAN", "Switching"]
+    },
+    {
+      "id": "proj20",
+      "title": "Inter vlan Routing ",
+      "category": "Networking",
+      "year": "2025",
+      "image": "/intervlanrouting.png",
+      "description": "Advanced inter-VLAN routing configuration with static routes, ACLs, and firewall rules for secure network segmentation.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Mikrotik", "VLAN", "Firewall", "Security"]
+    },
+    {
+      "id": "proj21",
+      "title": "SD-WAN Enterprise Branch Network Architecture",
+      "category": "Networking",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1200",
+      "description": "Software-defined WAN deployment optimizing multi-path traffic routing, BGP failover, and cloud connection links.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["SD-WAN", "BGP", "Routing", "Cloud Networks"]
+    },
+    {
+      "id": "proj22",
+      "title": "Palo Alto Threat Prevention & Zone Security",
+      "category": "Networking",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1200",
+      "description": "Zone-based firewall security design incorporating App-ID rules, WildFire threat prevention, and DNS security.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Palo Alto", "App-ID", "Threat Prevention", "Security"]
+    },
+    {
+      "id": "proj23",
+      "title": "Campus Wireless Mesh & Controller Setup",
+      "category": "Networking",
+      "year": "2024",
+      "image": "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=1200",
+      "description": "High-density Wi-Fi 6 enterprise deployment featuring wireless LAN controllers, 802.1X RADIUS authentication, and seamless roaming.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Aruba", "WLC", "Wi-Fi 6", "RADIUS"]
+    },
+    {
+      "id": "proj24",
+      "title": "Zero Trust Network Access (ZTNA) Framework",
+      "category": "Networking",
+      "year": "2026",
+      "image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=1200",
+      "description": "Implementation of micro-segmentation and identity-aware proxy policies for secure remote user connectivity.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["ZTNA", "Cloudflare Access", "Identity", "Zero Trust"]
+    },
+    {
+      "id": "proj25",
+      "title": "High-Availability Load Balancing with F5 BIG-IP",
+      "category": "Networking",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&q=80&w=1200",
+      "description": "F5 LTM load balancer cluster setup with custom iRules, SSL offloading, and intelligent health monitor probes.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["F5 BIG-IP", "LTM", "Load Balancing", "SSL"]
+    },
+    {
+      "id": "proj26",
+      "title": "Automated Network Monitoring & Prometheus System",
+      "category": "Networking",
+      "year": "2025",
+      "image": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200",
+      "description": "Real-time telemetry dashboard using Grafana, Prometheus, SNMP exporters, and automated Slack alert triggers.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["Grafana", "Prometheus", "SNMP", "Ansible"]
+    },
+    {
+      "id": "proj27",
+      "title": "Hybrid Cloud AWS VPC & Direct Connect Pipeline",
+      "category": "Networking",
+      "year": "2026",
+      "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=1200",
+      "description": "Hybrid cloud interconnect connecting on-premise data centers to AWS VPC via dedicated Direct Connect & Transit Gateway.",
+      "liveDemo": "https://example.com",
+      "github": "https://github.com",
+      "technologies": ["AWS VPC", "Direct Connect", "Transit Gateway", "BGP"]
     }
   ],
   "certificates": [

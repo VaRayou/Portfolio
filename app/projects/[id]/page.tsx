@@ -17,6 +17,7 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 import BackButton from "./BackButton";
+import ProjectImageViewer from "@/components/ProjectImageViewer";
 import portfolioData from "@/data/portfolio.json";
 import { notFound } from "next/navigation";
 
@@ -134,17 +135,10 @@ export default async function ProjectDetails({ params }: { params: Promise<{ id:
           {/* Right Column (Visuals) */}
           <div className="lg:col-span-7 flex flex-col space-y-6">
             
-            {/* Large Preview */}
-            <div className="relative w-full aspect-[4/3] rounded-3xl overflow-hidden bg-[#0f0f0f] border border-white/5 p-4 shadow-2xl">
-              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-black">
-                <Image 
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
+            {/* Large Preview Viewer (Uncropped, Full original artwork) */}
+            <ProjectImageViewer src={project.image} title={project.title} />
+            
+            {/* Key Features List */}
             
             {/* Key Features List */}
             <div className="bg-[#0f0f0f] border border-white/5 rounded-3xl p-8">
