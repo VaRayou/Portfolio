@@ -113,14 +113,14 @@
     },
     {
       "id": "proj6",
-      "title": "AI Content Studio & Automation",
+      "title": "Daily Money Saving Management Web Application",
       "category": "Web Application",
       "year": "2025",
-      "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=1200",
-      "description": "AI-powered creative assistant for automated copywriting, image generation, and social media scheduling.",
-      "liveDemo": "https://example.com",
+      "image": "/moneysavingweb.png",
+      "description": "A personal finance management tool that helps users track daily expenses, set savings goals, and visualize spending habits with interactive charts.",
+      "liveDemo": "https://dailysavingmoneyplan.onrender.com",
       "github": "https://github.com",
-      "technologies": ["React", "Next.js", "OpenAI API", "Supabase"]
+      "technologies": ["Php", "MySQL", "JavaScript", "Bootstrap"]
     },
     {
       "id": "proj7",
