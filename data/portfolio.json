@@ -129,7 +129,7 @@
       "year": "2024",
       "image": "/attendanceweb.png",
       "description": "A comprehensive attendance tracking system for organizations, allowing employees to log their attendance, view schedules, and generate reports.",
-      "liveDemo": "https://attendance-management-git-main-akira-ushi.vercel.app/",
+      "liveDemo": "attendance-management-seven-sigma.vercel.app",
       "github": "https://github.com",
       "technologies": ["Next.js", "Stripe", "Zustand", "TailwindCSS"]
     },
