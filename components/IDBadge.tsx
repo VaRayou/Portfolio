@@ -126,7 +126,7 @@ export default function IDBadge() {
       });
     }, dropDelay);
 
-    const handleResizeOrScroll = () => {
+    const recalcAndSnap = () => {
       const currentSc = getScaleForWidth(window.innerWidth);
       setScale(currentSc);
       const { ax, ay } = getAnchorPos();
@@ -141,12 +141,40 @@ export default function IDBadge() {
       }
     };
 
+    const handleResizeOrScroll = () => recalcAndSnap();
+
     handleResizeOrScroll();
     window.addEventListener("resize", handleResizeOrScroll);
     window.addEventListener("scroll", handleResizeOrScroll, { passive: true });
 
+    // Watch the navbar for layout / transform changes (Framer Motion entrance
+    // animation, font-loading layout shifts, etc.) so the card rest position
+    // stays correct without requiring a manual scroll.
+    let anchorRecalcTimeout: ReturnType<typeof setTimeout> | null = null;
+    const debouncedRecalc = () => {
+      if (anchorRecalcTimeout) clearTimeout(anchorRecalcTimeout);
+      anchorRecalcTimeout = setTimeout(recalcAndSnap, 50);
+    };
+
+    const navbarEl = document.querySelector("[data-navbar]");
+    let navObserver: MutationObserver | null = null;
+    if (navbarEl) {
+      navObserver = new MutationObserver(debouncedRecalc);
+      navObserver.observe(navbarEl, { attributes: true, attributeFilter: ["style"] });
+    }
+
+    const anchorEl = document.querySelector("[data-lanyard-anchor]");
+    let anchorObserver: ResizeObserver | null = null;
+    if (anchorEl) {
+      anchorObserver = new ResizeObserver(debouncedRecalc);
+      anchorObserver.observe(anchorEl);
+    }
+
     return () => {
       clearTimeout(timer);
+      if (anchorRecalcTimeout) clearTimeout(anchorRecalcTimeout);
+      navObserver?.disconnect();
+      anchorObserver?.disconnect();
       window.removeEventListener("resize", handleResizeOrScroll);
       window.removeEventListener("scroll", handleResizeOrScroll);
     };
