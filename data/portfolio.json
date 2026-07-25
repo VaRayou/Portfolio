@@ -129,9 +129,9 @@
       "year": "2024",
       "image": "/attendanceweb.png",
       "description": "A comprehensive attendance tracking system for organizations, allowing employees to log their attendance, view schedules, and generate reports.",
-      "liveDemo": "attendance-management-seven-sigma.vercel.app",
+      "liveDemo": "https://attendance-management-seven-sigma.vercel.app/login",
       "github": "https://github.com",
-      "technologies": ["Next.js", "Stripe", "Zustand", "TailwindCSS"]
+      "technologies": ["Angular", "TypeScript", "Bootstrap", "Node.js"]
     },
     {
       "id": "proj8",
