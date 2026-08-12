@@ -1,10 +1,10 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, useAnimationFrame, animate as framerAnimate } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useAnimationFrame, animate as framerAnimate, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import portfolioData from "@/data/portfolio.json";
-import { useEffect, useRef, useState } from "react";
-import { RefreshCw, QrCode } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { RefreshCw, QrCode, Sparkles } from "lucide-react";
 
 const CARD_W = 280;
 const CARD_H = 410;
@@ -18,10 +18,19 @@ function getScaleForWidth(w: number) {
 }
 
 function getRestYOffset(w: number) {
-  if (w < 480) return 110;
-  if (w < 640) return 140;
+  if (w < 480) return 80;
+  if (w < 640) return 110;
   if (w < 1024) return 180;
   return 220;
+}
+
+// Responsive starting height: the card must begin completely above the viewport
+// (and therefore above the fixed navbar), scaled for small screens.
+function getStartY(w: number, h: number) {
+  const sc = getScaleForWidth(w);
+  const cardH = CARD_H * sc;
+  const aboveViewportMargin = Math.max(h * 0.22, 150);
+  return -(cardH + aboveViewportMargin);
 }
 
 export default function IDBadge() {
@@ -29,22 +38,46 @@ export default function IDBadge() {
   const strapRef = useRef<HTMLDivElement>(null);
   const glareRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for card position and tilt
+  // Motion values for card position and Z-rotation
   const cardX = useMotionValue(0);
   const cardY = useMotionValue(0);
   const rotateZ = useMotionValue(0);
+
+  // 3D Drop physics & impact motion values
+  const dropRotateX = useMotionValue(0);
+  const dropRotateY = useMotionValue(0);
+  const dropRotateZ = useMotionValue(-3.5);
+  const dropScaleX = useMotionValue(1);
+  const dropScaleY = useMotionValue(1);
+  const strapTension = useMotionValue(0);
 
   // 3D Mouse Tilt values
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 180, damping: 20 });
   const springY = useSpring(mouseY, { stiffness: 180, damping: 20 });
-  const rotateX = useTransform(springY, [-0.5, 0.5], [10, -10]);
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-10, 10]);
 
-  const [scale, setScale] = useState(1);
+  const mouseRotateX = useTransform(springY, [-0.5, 0.5], [12, -12]);
+  const mouseRotateY = useTransform(springX, [-0.5, 0.5], [-12, 12]);
+
+  // Combine mouse 3D tilt + physical drop pitch/roll
+  const combinedRotateX = useTransform(
+    [mouseRotateX, dropRotateX],
+    ([mRx, dRx]: number[]) => mRx + dRx
+  );
+
+  const combinedRotateY = useTransform(
+    [mouseRotateY, dropRotateY],
+    ([mRy, dRy]: number[]) => mRy + dRy
+  );
+
+  // Entrance opacity — used only for the reduced-motion fade-in.
+  const settleOpacity = useMotionValue(1);
+
   const [isFlipped, setIsFlipped] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(1);
+  const [landingGlow, setLandingGlow] = useState(false);
+  const [isDraggingState, setIsDraggingState] = useState(false);
 
   const isDragging = useRef(false);
   const dragStartPos = useRef({ x: 0, y: 0 });
@@ -55,27 +88,93 @@ export default function IDBadge() {
   const prevCardX = useRef(0);
   const angularVelocity = useRef(0);
 
-  // Helper to find the dynamic anchor position on the Navbar clip with boundary clamping
+  const lastPointerTime = useRef(0);
+  const lastPointerPos = useRef({ x: 0, y: 0 });
+  const pointerVelocity = useRef({ x: 0, y: 0 });
+
+  // Helper to find dynamic anchor position on Navbar clip
   const getAnchorPos = () => {
     if (typeof window === "undefined") return { ax: 800, ay: 62, rawAx: 800 };
     const clipEl = document.querySelector("[data-lanyard-anchor]") || document.querySelector("[data-navbar]");
-    let rawAx = window.innerWidth * 0.78;
+    const isMobileScreen = window.innerWidth < 768;
+    let rawAx = isMobileScreen ? window.innerWidth * 0.88 : window.innerWidth * 0.78;
     let ay = 62;
     if (clipEl) {
       const rect = clipEl.getBoundingClientRect();
       rawAx = rect.left + rect.width / 2;
-      ay = rect.bottom - 4; // Attaches right inside the clip ring
+      if (isMobileScreen) {
+        rawAx = Math.max(rawAx, window.innerWidth * 0.72);
+      }
+      ay = rect.bottom - 4;
     }
 
     const currentSc = getScaleForWidth(window.innerWidth);
     const scaledW = CARD_W * currentSc;
-    const margin = window.innerWidth < 640 ? 14 : 24;
+    const margin = window.innerWidth < 640 ? 8 : 24;
     const minAx = margin + scaledW / 2;
     const maxAx = window.innerWidth - margin - scaledW / 2;
     const clampedAx = Math.max(minAx, Math.min(maxAx, rawAx));
 
     return { ax: clampedAx, ay, rawAx };
   };
+
+  // High-performance physical drop & natural swing animation sequence
+  const executeDropAnimation = useCallback((restX: number, restY: number, responsiveScale: number) => {
+    const startY = getStartY(window.innerWidth, window.innerHeight);
+
+    // Phase 1: Hidden above the navbar — fully out of view, tilted & offset.
+    // The card hangs from the string by its top-center attachment point.
+    cardX.set(restX + 8);
+    cardY.set(startY);
+    dropRotateZ.set(-5);
+    dropRotateX.set(-14);
+    dropRotateY.set(8);
+    dropScaleY.set(responsiveScale);
+    dropScaleX.set(responsiveScale);
+    strapTension.set(0);
+
+    // Phase 2 + 3: Fast gravity fall, then rope-tension recoil & settle.
+    // Easing is cubic-bezier (accelerating), never linear — it reads as weight.
+    framerAnimate(cardY, [startY, restY + 18, restY + 5, restY], {
+      duration: 1.05,
+      ease: [
+        [0.55, 0, 1, 0.45], // accelerating fall (gravity)
+        [0.2, 0.8, 0.3, 1], // rope tension recoil back up
+        [0.45, 0, 0.55, 1], // gentle final settle
+      ],
+      times: [0, 0.55, 0.82, 1],
+    });
+
+    // Natural decreasing swing from the TOP-CENTER attachment point.
+    // A damped spring from -5deg naturally produces: -5 -> +4 -> -3 -> +2 -> -1 -> ~0
+    // with progressively longer, softer oscillation (momentum + damping).
+    framerAnimate(dropRotateZ, 0, {
+      type: "spring",
+      stiffness: 55,
+      damping: 2.2,
+      mass: 1,
+      from: -5,
+    });
+
+    // Coupled horizontal momentum sway — subtle, feels like the string allows drift
+    framerAnimate(cardX, [restX + 8, restX - 6, restX + 4, restX - 2, restX], {
+      duration: 1.8,
+      ease: [0.22, 1, 0.36, 1],
+      times: [0, 0.3, 0.5, 0.72, 1],
+    });
+
+    // 3D pitch stabilization (impact nose-down, then settle flat)
+    framerAnimate(dropRotateX, [-14, 18, -8, 3, 0], {
+      duration: 1.5,
+      ease: "easeOut",
+      times: [0, 0.28, 0.55, 0.8, 1],
+    });
+
+    // Strap tension pulse & subtle landing glint as the string goes taut
+    framerAnimate(strapTension, [0, 1, 0.2, 0], { duration: 0.6, ease: "easeOut" });
+    setLandingGlow(true);
+    setTimeout(() => setLandingGlow(false), 600);
+  }, [cardX, cardY, dropRotateZ, dropRotateX, dropRotateY, dropScaleX, dropScaleY, strapTension]);
 
   // Scroll listener to smoothly fade out card & lanyard when scrolling down past Hero
   useEffect(() => {
@@ -99,36 +198,85 @@ export default function IDBadge() {
     const restY = ay + getRestYOffset(window.innerWidth);
     restPosRef.current = { x: restX, y: restY };
 
+    const responsiveScale = getScaleForWidth(window.innerWidth);
+    const prefersReducedMotion =
+      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
     if (!hasDropped.current) {
+      // Place the card high above the navbar, fully out of view, tilted & offset
+      cardX.set(restX + 8);
+      cardY.set(getStartY(window.innerWidth, window.innerHeight));
+      dropRotateZ.set(-5);
+      dropRotateX.set(-14);
+      dropRotateY.set(8);
+      dropScaleX.set(responsiveScale);
+      dropScaleY.set(responsiveScale);
+      settleOpacity.set(1);
+    }
+
+    if (prefersReducedMotion) {
+      // Reduced-motion users skip the physical drop/swing: show the card in its
+      // final position with a simple fade-in instead.
+      hasDropped.current = true;
       cardX.set(restX);
-      cardY.set(-CARD_H - 100);
+      cardY.set(restY);
+      dropRotateZ.set(0);
+      dropRotateX.set(0);
+      dropRotateY.set(0);
+      strapTension.set(0);
+      settleOpacity.set(0);
+      framerAnimate(settleOpacity, 1, { duration: 0.6, ease: "easeOut" });
     }
 
     const isFastIntro = typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
-    const dropDelay = isFastIntro ? 100 : 4200;
 
-    const timer = setTimeout(() => {
-      if (hasDropped.current) return;
-      hasDropped.current = true;
-      const { x: restX, y: restY } = restPosRef.current;
+    // Trigger the drop only AFTER the loading/landing page has finished so the
+    // card is not falling behind the intro screen. The event fires as the intro
+    // starts its exit fade; the short delay lets the screen clear before the
+    // card drops through the navbar. A fallback timer guarantees it always runs.
+    let dropTimer: ReturnType<typeof setTimeout> | null = null;
+    let introCompleteHandler: (() => void) | null = null;
 
-      framerAnimate(cardY, restY, {
-        type: "spring",
-        stiffness: 85,
-        damping: 13,
-        mass: 1.0,
-      });
+    if (!prefersReducedMotion) {
+      const triggerDrop = () => {
+        if (hasDropped.current) return;
+        hasDropped.current = true;
+        const { x: rx, y: ry } = restPosRef.current;
+        executeDropAnimation(rx, ry, responsiveScale);
+      };
 
-      framerAnimate(cardX, [restX - 30, restX + 18, restX - 6, restX], {
-        duration: 0.95,
-        ease: [0.16, 1, 0.3, 1],
-        times: [0, 0.35, 0.7, 1],
-      });
-    }, dropDelay);
+      if (isFastIntro) {
+        // Intro is skipped entirely — drop quickly once the page is visible.
+        dropTimer = setTimeout(triggerDrop, 100);
+      } else {
+        const landingReady = typeof window !== "undefined" && (window as any).__portfolioIntroComplete === true;
+        if (landingReady) {
+          dropTimer = setTimeout(triggerDrop, 250);
+        } else {
+          // Only start the card animation after the intro loader has fully exited.
+          // The custom event is emitted by Intro after the loading screen disappears.
+          introCompleteHandler = () => {
+            if (hasDropped.current) return;
+            if (dropTimer) clearTimeout(dropTimer);
+            dropTimer = setTimeout(triggerDrop, 250);
+          };
+          window.addEventListener("intro-complete", introCompleteHandler);
+
+          // Safety fallback for edge cases where the intro event isn't received.
+          // This is intentionally long so the loader always has time to disappear.
+          dropTimer = setTimeout(() => {
+            if (!hasDropped.current) triggerDrop();
+          }, 10000);
+        }
+      }
+    }
 
     const recalcAndSnap = () => {
       const currentSc = getScaleForWidth(window.innerWidth);
-      setScale(currentSc);
+      if (hasDropped.current && !isDragging.current) {
+        dropScaleX.set(currentSc);
+        dropScaleY.set(currentSc);
+      }
       const { ax, ay } = getAnchorPos();
       anchorPosRef.current = { ax, ay };
       const nextRestX = ax - CARD_W / 2;
@@ -147,9 +295,6 @@ export default function IDBadge() {
     window.addEventListener("resize", handleResizeOrScroll);
     window.addEventListener("scroll", handleResizeOrScroll, { passive: true });
 
-    // Watch the navbar for layout / transform changes (Framer Motion entrance
-    // animation, font-loading layout shifts, etc.) so the card rest position
-    // stays correct without requiring a manual scroll.
     let anchorRecalcTimeout: ReturnType<typeof setTimeout> | null = null;
     const debouncedRecalc = () => {
       if (anchorRecalcTimeout) clearTimeout(anchorRecalcTimeout);
@@ -171,22 +316,25 @@ export default function IDBadge() {
     }
 
     return () => {
-      clearTimeout(timer);
+      if (dropTimer) clearTimeout(dropTimer);
+      if (introCompleteHandler) window.removeEventListener("intro-complete", introCompleteHandler);
       if (anchorRecalcTimeout) clearTimeout(anchorRecalcTimeout);
       navObserver?.disconnect();
       anchorObserver?.disconnect();
       window.removeEventListener("resize", handleResizeOrScroll);
       window.removeEventListener("scroll", handleResizeOrScroll);
     };
-  }, [cardX, cardY]);
+  }, [cardX, cardY, dropScaleX, dropScaleY, dropRotateZ, dropRotateX, dropRotateY, strapTension, settleOpacity, executeDropAnimation]);
 
   // Frame-by-frame position tracking for Lanyard Strap
   useAnimationFrame((_, delta) => {
-    const { ay, rawAx } = getAnchorPos();
+    if (scrollOpacity <= 0.01) return;
 
+    const { ay, rawAx } = getAnchorPos();
     const currentScale = getScaleForWidth(window.innerWidth);
     const cx = cardX.get() + CARD_W / 2;
     const cy = cardY.get() - 8 * currentScale;
+
 
     const dx = cx - rawAx;
     const dy = cy - ay;
@@ -201,8 +349,20 @@ export default function IDBadge() {
       const scrollY = typeof window !== "undefined" ? window.scrollY : 0;
       const fadeDistance = typeof window !== "undefined" ? Math.min(window.innerHeight * 0.5, 450) : 400;
       const currentOpacity = Math.max(0, Math.min(1, 1 - scrollY / fadeDistance));
-      strapRef.current.style.opacity = `${currentOpacity}`;
-      strapRef.current.style.visibility = currentOpacity <= 0.01 ? "hidden" : "visible";
+      // Keep the string hidden while the card is entirely above the viewport —
+      // it would otherwise point up into the sky before the drop.
+      const cardTopVisible = cy + CARD_H * currentScale >= -20;
+      const entranceFactor = settleOpacity.get();
+      strapRef.current.style.opacity = `${currentOpacity * entranceFactor}`;
+      strapRef.current.style.visibility =
+        currentOpacity <= 0.01 || !cardTopVisible || entranceFactor <= 0.01 ? "hidden" : "visible";
+
+      const tensionVal = strapTension.get();
+      if (tensionVal > 0.01) {
+        strapRef.current.style.boxShadow = `0 0 ${16 * tensionVal}px rgba(255, 255, 255, ${0.5 * tensionVal})`;
+      } else {
+        strapRef.current.style.boxShadow = "none";
+      }
     }
 
     const currentX = cardX.get();
@@ -211,7 +371,12 @@ export default function IDBadge() {
     prevCardX.current = currentX;
 
     const velocityTilt = angularVelocity.current * 0.6;
-    rotateZ.set(isDragging.current ? angleDeg + velocityTilt * 1.4 : angleDeg * 0.1 + velocityTilt);
+    const cinematicZ = dropRotateZ.get();
+    // Only the taut string (card hanging below the anchor) pulls the card into
+    // alignment; while the card is still falling above it the string is folded
+    // and the card keeps its own swing momentum.
+    const stringAlign = cy >= ay ? angleDeg * 0.15 : 0;
+    rotateZ.set(isDragging.current ? angleDeg + velocityTilt * 1.4 : stringAlign + velocityTilt + cinematicZ);
 
     if (glareRef.current) {
       const gX = springX.get() * 180;
@@ -235,15 +400,24 @@ export default function IDBadge() {
     mouseY.set(0);
   };
 
-  // Drag Handlers
+  // Advanced Drag & Throw Release Handlers
   const handlePointerDown = (e: React.PointerEvent) => {
     if (scrollOpacity <= 0.01) return;
     isDragging.current = true;
+    setIsDraggingState(true);
     dragStartPos.current = { x: e.clientX, y: e.clientY };
     dragOffsetRef.current = {
       x: e.clientX - cardX.get(),
       y: e.clientY - cardY.get(),
     };
+    lastPointerPos.current = { x: e.clientX, y: e.clientY };
+    lastPointerTime.current = performance.now();
+    pointerVelocity.current = { x: 0, y: 0 };
+
+    const currentSc = getScaleForWidth(window.innerWidth);
+    framerAnimate(dropScaleX, 1.03 * currentSc, { duration: 0.15 });
+    framerAnimate(dropScaleY, 1.03 * currentSc, { duration: 0.15 });
+
     try {
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
     } catch {}
@@ -251,6 +425,17 @@ export default function IDBadge() {
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging.current) return;
+    const now = performance.now();
+    const dt = Math.max(1, now - lastPointerTime.current);
+    const dx = e.clientX - lastPointerPos.current.x;
+    const dy = e.clientY - lastPointerPos.current.y;
+    pointerVelocity.current = {
+      x: (dx / dt) * 1000,
+      y: (dy / dt) * 1000,
+    };
+    lastPointerPos.current = { x: e.clientX, y: e.clientY };
+    lastPointerTime.current = now;
+
     const nextX = e.clientX - dragOffsetRef.current.x;
     const nextY = e.clientY - dragOffsetRef.current.y;
     cardX.set(nextX);
@@ -260,20 +445,59 @@ export default function IDBadge() {
   const handlePointerUp = (e: React.PointerEvent) => {
     if (!isDragging.current) return;
     isDragging.current = false;
+    setIsDraggingState(false);
     try {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {}
 
-    const dx = Math.abs(e.clientX - dragStartPos.current.x);
-    const dy = Math.abs(e.clientY - dragStartPos.current.y);
-    if (dx < 6 && dy < 6) {
+    const currentSc = getScaleForWidth(window.innerWidth);
+    framerAnimate(dropScaleX, currentSc, { duration: 0.25 });
+    framerAnimate(dropScaleY, currentSc, { duration: 0.25 });
+
+    const distMoved = Math.hypot(e.clientX - dragStartPos.current.x, e.clientY - dragStartPos.current.y);
+    if (distMoved < 6) {
       setIsFlipped((prev) => !prev);
       return;
     }
 
     const { x: restX, y: restY } = restPosRef.current;
-    framerAnimate(cardX, restX, { type: "spring", stiffness: 220, damping: 18 });
-    framerAnimate(cardY, restY, { type: "spring", stiffness: 220, damping: 18 });
+    const { x: vx, y: vy } = pointerVelocity.current;
+
+    // Realistic release momentum physics with spring inertia
+    framerAnimate(cardX, restX, {
+      type: "spring",
+      stiffness: 160,
+      damping: 15,
+      mass: 1.0,
+      velocity: vx,
+    });
+
+    framerAnimate(cardY, restY, {
+      type: "spring",
+      stiffness: 160,
+      damping: 15,
+      mass: 1.0,
+      velocity: vy,
+    });
+
+    // 3D Pitch tilt response based on release velocity vector
+    const pitchImpulse = Math.min(24, Math.max(-24, vy * 0.03));
+    framerAnimate(dropRotateX, [pitchImpulse, -pitchImpulse * 0.4, 0], {
+      duration: 0.75,
+      ease: "easeOut",
+    });
+
+    if (e.clientY > restY) {
+      framerAnimate(strapTension, [0, 0.6, 0], { duration: 0.5 });
+    }
+  };
+
+  // Re-trigger drop animation when metal clip is clicked
+  const handleClipClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const { x: restX, y: restY } = restPosRef.current;
+    const responsiveScale = getScaleForWidth(window.innerWidth);
+    executeDropAnimation(restX, restY, responsiveScale);
   };
 
   return (
@@ -287,11 +511,11 @@ export default function IDBadge() {
       {/* ═══ CLEAN MINIMAL LANYARD STRAP ═══ */}
       <div
         ref={strapRef}
-        className="fixed top-0 left-0 w-[16px] z-35 flex flex-col items-center overflow-hidden pointer-events-none shadow-xl"
+        className="fixed top-0 left-0 w-[16px] z-35 flex flex-col items-center overflow-hidden pointer-events-none shadow-xl transition-shadow duration-300"
         style={{
           background: "linear-gradient(90deg, #111 0%, #222 50%, #111 100%)",
-          borderLeft: "1px solid rgba(255,255,255,0.06)",
-          borderRight: "1px solid rgba(255,255,255,0.06)",
+          borderLeft: "1px solid rgba(255,255,255,0.08)",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
           willChange: "transform, height",
         }}
       >
@@ -311,8 +535,9 @@ export default function IDBadge() {
           x: cardX,
           y: cardY,
           rotateZ,
-          scale,
-          opacity: scrollOpacity,
+          scaleX: dropScaleX,
+          scaleY: dropScaleY,
+          opacity: settleOpacity,
           visibility: scrollOpacity <= 0.01 ? "hidden" : "visible",
           pointerEvents: scrollOpacity <= 0.01 ? "none" : "auto",
           position: "fixed",
@@ -320,6 +545,7 @@ export default function IDBadge() {
           left: 0,
           width: CARD_W,
           height: CARD_H,
+          transformOrigin: "50% 0%",
           originX: 0.5,
           originY: 0,
           zIndex: 35,
@@ -327,12 +553,16 @@ export default function IDBadge() {
         }}
         className="cursor-grab active:cursor-grabbing select-none touch-none"
       >
-        {/* ═══ SLEEK METAL CLIP ═══ */}
-        <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center pointer-events-none">
-          <div className="w-4 h-5 rounded-t-full border border-gray-400 bg-gradient-to-r from-gray-400 via-gray-200 to-gray-400 shadow flex items-center justify-center">
-            <div className="w-2 h-3 rounded-t-full bg-[#111]" />
+        {/* ═══ SLEEK METAL CLIP (WITH RE-DROP TRIGGER) ═══ */}
+        <div
+          onClick={handleClipClick}
+          className="absolute -top-5 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center cursor-pointer group pointer-events-auto"
+          title="Click metal clip to drop card again!"
+        >
+          <div className="w-4 h-5 rounded-t-full border border-white/40 bg-gradient-to-r from-gray-300 via-white to-gray-400 shadow-md flex items-center justify-center group-hover:border-emerald-400 group-hover:shadow-[0_0_10px_rgba(52,211,153,0.5)] transition-all">
+            <div className="w-2 h-3 rounded-t-full bg-[#0c0d12]" />
           </div>
-          <div className="w-7 h-2.5 rounded-sm bg-gradient-to-b from-gray-400 via-gray-600 to-gray-800 border border-white/20 -mt-1 shadow-md" />
+          <div className="w-7 h-2.5 rounded-sm bg-gradient-to-b from-gray-200 via-gray-400 to-gray-700 border border-white/30 -mt-1 shadow-lg group-hover:brightness-125 transition-all" />
         </div>
 
         {/* ═══ SLEEK & SIMPLE CARD BODY ═══ */}
@@ -340,19 +570,39 @@ export default function IDBadge() {
           animate={{ rotateY: isFlipped ? 180 : 0 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           style={{
-            rotateX,
-            rotateY,
+            rotateX: combinedRotateX,
+            rotateY: isFlipped ? 180 : combinedRotateY,
             transformStyle: "preserve-3d",
           }}
-          className="relative w-full h-full rounded-2xl bg-[#0d0f14] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden"
+          className="relative w-full h-full rounded-2xl bg-[#0c0d12] border border-white/12 shadow-[0_25px_60px_rgba(0,0,0,0.85)] overflow-hidden"
         >
+          {/* Landing glow burst & dynamic glass sheen */}
+          <AnimatePresence>
+            {landingGlow && (
+              <motion.div
+                key="landing-glow"
+                className="absolute inset-0 pointer-events-none z-30 rounded-2xl"
+                initial={{ opacity: 0.95, scale: 0.96 }}
+                animate={{ opacity: 0, scale: 1.04 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.65, ease: "easeOut" }}
+                style={{
+                  background:
+                    "radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 40%, transparent 70%)",
+                  boxShadow:
+                    "0 0 50px 15px rgba(255,255,255,0.18), inset 0 0 40px rgba(255,255,255,0.1)",
+                }}
+              />
+            )}
+          </AnimatePresence>
+
           {/* Gloss glare sheen */}
           <div
             ref={glareRef}
-            className="absolute inset-0 pointer-events-none z-20 opacity-20 mix-blend-overlay transition-transform duration-75"
+            className="absolute inset-0 pointer-events-none z-20 opacity-25 mix-blend-overlay transition-transform duration-75"
             style={{
               background:
-                "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.8) 50%, transparent 70%)",
+                "linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.85) 50%, transparent 70%)",
             }}
           />
 
@@ -365,17 +615,17 @@ export default function IDBadge() {
           >
             {/* Top hole slot & Minimal Branding */}
             <div className="w-full flex flex-col items-center">
-              <div className="w-8 h-2 rounded-full bg-[#050505] border border-white/10 mb-3" />
+              <div className="w-8 h-2 rounded-full bg-[#050505] border border-white/15 mb-3" />
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="text-[9px] font-mono tracking-[0.25em] text-white/50 uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="text-[9px] font-mono tracking-[0.25em] text-white/60 uppercase">
                   STAFF ID • KDIB-IT
                 </span>
               </div>
             </div>
 
-            {/* Clean Portrait Photo */}
-            <div className="relative w-[135px] h-[135px] rounded-xl overflow-hidden border border-white/15 shadow-xl my-auto">
+            {/* Clean Portrait Photo with Holographic Accent */}
+            <div className="relative w-[135px] h-[135px] rounded-xl overflow-hidden border border-white/20 shadow-2xl my-auto group">
               <Image
                 src="/coverface.JPG"
                 alt={portfolioData.personal.name}
@@ -385,12 +635,14 @@ export default function IDBadge() {
                 priority
               />
               <div className="absolute inset-0 ring-1 ring-inset ring-black/20 rounded-xl pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
             </div>
 
             {/* Typography */}
             <div className="text-center w-full space-y-1">
-              <h2 className="text-lg font-heading font-bold text-white tracking-wide">
+              <h2 className="text-lg font-heading font-bold text-white tracking-wide flex items-center justify-center gap-1.5">
                 {portfolioData.personal.name}
+                <Sparkles className="w-3 h-3 text-emerald-400 opacity-80" />
               </h2>
               <p className="text-[11px] font-mono text-white/50 tracking-wider">
                 {portfolioData.personal.role}
@@ -411,14 +663,14 @@ export default function IDBadge() {
                   />
                 ))}
               </div>
-              <span className="text-[8px] font-mono text-white/30 tracking-widest">
+              <span className="text-[8px] font-mono text-white/40 tracking-widest">
                 ID-8492-2026
               </span>
             </div>
 
             {/* Flip hint */}
-            <div className="absolute bottom-1 right-2 opacity-30 hover:opacity-70 transition-opacity">
-              <RefreshCw className="w-2.5 h-2.5 text-white" />
+            <div className="absolute bottom-1.5 right-2.5 opacity-40 hover:opacity-100 transition-opacity">
+              <RefreshCw className="w-3 h-3 text-white" />
             </div>
           </div>
 
@@ -456,8 +708,8 @@ export default function IDBadge() {
             </div>
 
             {/* Flip hint */}
-            <div className="absolute bottom-1 right-2 opacity-30 hover:opacity-70 transition-opacity">
-              <RefreshCw className="w-2.5 h-2.5 text-white" />
+            <div className="absolute bottom-1.5 right-2.5 opacity-40 hover:opacity-100 transition-opacity">
+              <RefreshCw className="w-3 h-3 text-white" />
             </div>
           </div>
         </motion.div>

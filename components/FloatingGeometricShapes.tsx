@@ -2,7 +2,7 @@
 
 export default function FloatingGeometricShapes() {
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden md:block" aria-hidden="true">
       {/* Triangle - top left */}
       <div
         className="geo-shape-1 absolute top-32 left-16 opacity-[0.06]"

@@ -118,7 +118,7 @@
       "year": "2025",
       "image": "/moneysavingweb.png",
       "description": "A personal finance management tool that helps users track daily expenses, set savings goals, and visualize spending habits with interactive charts.",
-      "liveDemo": "https://dailysavingmoneyplan.onrender.com",
+      "liveDemo": "https://mn-daily-management.onrender.com/index.php",
       "github": "https://github.com",
       "technologies": ["Php", "MySQL", "JavaScript", "Bootstrap"]
     },

@@ -29,14 +29,16 @@ aria-hidden="true"
 }
 
 export default function Navbar() {
-const [mobileOpen, setMobileOpen] = useState(false);
-const [hasSeenIntro] = useState(() => {
-  try {
-    return typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
-  } catch {
-    return false;
-  }
-});
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("skipIntroNext") === "true") {
+        setHasSeenIntro(true);
+      }
+    } catch {}
+  }, []);
 const [lanyardOpacity, setLanyardOpacity] = useState(1);
 const activeSectionId = useActiveSection(["home", "about", "projects", "experience", "skills", "contact"]);
 
@@ -44,18 +46,25 @@ const activeLink = links.find(
 (l) => l.id === activeSectionId || l.matchIds?.includes(activeSectionId)
 )?.name || "Home";
 
-useEffect(() => {
-const handleScroll = () => {
-const scrollY = window.scrollY;
-const fadeDistance = Math.min(window.innerHeight * 0.5, 450);
-const op = Math.max(0, Math.min(1, 1 - scrollY / fadeDistance));
-setLanyardOpacity((prev) => (Math.abs(prev - op) > 0.01 ? op : prev));
-};
+  useEffect(() => {
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const fadeDistance = Math.min(window.innerHeight * 0.5, 450);
+          const op = Math.max(0, Math.min(1, 1 - scrollY / fadeDistance));
+          setLanyardOpacity((prev) => (Math.abs(prev - op) > 0.01 ? op : prev));
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-handleScroll();
-window.addEventListener("scroll", handleScroll, { passive: true });
-return () => window.removeEventListener("scroll", handleScroll);
-}, []);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
 const navDelay = hasSeenIntro ? 0.1 : 4.2;
 

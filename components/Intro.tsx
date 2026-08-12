@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence, animate } from "framer-motion";
 import portfolioData from "@/data/portfolio.json";
 
@@ -49,14 +49,25 @@ export default function Intro() {
     };
   }, [isLoading]);
 
-  if (!isLoading) return null;
+  // Fires only once the loading screen has fully faded out, so dependent
+  // animations (like the ID card drop) start strictly AFTER the landing page
+  // is visible — never behind the loader.
+  const handleIntroComplete = useCallback(() => {
+    try {
+      (window as any).__portfolioIntroComplete = true;
+      window.dispatchEvent(new CustomEvent("intro-complete"));
+    } catch {
+      // Fallback for private browsing
+    }
+  }, []);
 
   const titleWords = portfolioData.personal.name || "PORTFOLIO";
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={handleIntroComplete}>
       {isLoading && (
         <motion.div
+          key="intro-loader"
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#050505] text-white overflow-hidden select-none font-sans"
           exit={{ opacity: 0, scale: 1.02 }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}

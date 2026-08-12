@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Home, User, Briefcase, FolderOpen, Zap, Mail } from "lucide-react";
 import { useActiveSection } from "@/hooks/useActiveSection";
@@ -16,13 +16,15 @@ export default function FloatingDock() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [tooltip, setTooltip] = useState<string | null>(null);
   const activeSection = useActiveSection(["home", "about", "projects", "experience", "skills", "contact"]);
-  const [hasSeenIntro] = useState(() => {
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
+
+  useEffect(() => {
     try {
-      return typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
-    } catch {
-      return false;
-    }
-  });
+      if (sessionStorage.getItem("skipIntroNext") === "true") {
+        setHasSeenIntro(true);
+      }
+    } catch {}
+  }, []);
 
   const dockDelay = hasSeenIntro ? 0.1 : 4.2;
 

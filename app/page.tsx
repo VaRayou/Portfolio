@@ -29,8 +29,6 @@ const CommandPalette = dynamic(() => import("@/components/CommandPalette"), { ss
 const FloatingDock = dynamic(() => import("@/components/FloatingDock"), { ssr: false });
 const ThreeBackground = dynamic(() => import("@/components/ThreeBackground"), { ssr: false });
 const CursorTrail = dynamic(() => import("@/components/CursorTrail"), { ssr: false });
-const AIAssistant = dynamic(() => import("@/components/AIAssistant"), { ssr: false });
-const BackgroundMusicPlayer = dynamic(() => import("@/components/BackgroundMusicPlayer"), { ssr: false });
 
 export default function Home() {
   return (
@@ -42,8 +40,6 @@ export default function Home() {
         <ScrollProgressBar />
         <CommandPalette />
         <CursorTrail />
-        <AIAssistant />
-        <BackgroundMusicPlayer />
 
         {/* ── Fixed Backgrounds ─────────────────────── */}
         <FuturisticBackground />

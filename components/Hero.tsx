@@ -53,13 +53,15 @@ function TypingText({ roles }: { roles: string[] }) {
 
 export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
-  const [hasSeenIntro] = useState(() => {
+  const [hasSeenIntro, setHasSeenIntro] = useState(false);
+
+  useEffect(() => {
     try {
-      return typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true";
-    } catch {
-      return false;
-    }
-  });
+      if (sessionStorage.getItem("skipIntroNext") === "true") {
+        setHasSeenIntro(true);
+      }
+    } catch {}
+  }, []);
 
   const delayBase = hasSeenIntro ? 0.1 : 4.2;
 
@@ -84,7 +86,7 @@ export default function Hero() {
           {/* Left side Typography */}
           <motion.div
             style={{ y: textY, opacity: textOpacity }}
-            className="flex flex-col space-y-3 sm:space-y-4 md:space-y-6 pt-4 sm:pt-6 md:pt-10 text-left items-start w-full lg:w-[55%] xl:w-1/2 relative z-10"
+            className="flex flex-col space-y-3 sm:space-y-4 md:space-y-6 pt-4 sm:pt-6 md:pt-10 text-left items-start w-full lg:w-[55%] xl:w-1/2 relative z-10 pr-20 sm:pr-32 md:pr-40 lg:pr-0"
           >
             {/* Available badge */}
             <motion.div
@@ -101,13 +103,14 @@ export default function Hero() {
             </motion.div>
 
             {/* Heading */}
-            <div className="overflow-visible">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-[6.5rem] font-heading font-black leading-[1.05] tracking-tighter">
+            <div className="overflow-visible w-full">
+              <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-[6.5rem] font-heading font-black leading-[1.05] tracking-tighter break-words">
                 <SplitTextReveal text="Frontend" mode="chars" delay={delayBase + 0.2} stagger={0.03} />
                 <br />
                 <SplitTextReveal text="Developer" mode="chars" delay={delayBase + 0.5} stagger={0.03} gradient />
               </h1>
             </div>
+
 
             {/* Typing text + description */}
             <motion.div
