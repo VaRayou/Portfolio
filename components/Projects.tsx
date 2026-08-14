@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import portfolioData from "@/data/portfolio.json";
 import Image from "next/image";
 import { ArrowRight, Search, Filter, GitBranch, ExternalLink } from "lucide-react";
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useLayoutEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useLenis } from "lenis/react";
 import SplitTextReveal from "@/components/SplitTextReveal";
@@ -106,7 +106,9 @@ export default function Projects() {
   // briefly after the component renders, and also listen for focus events.
   const scrolledRef = useRef(false);
 
-  const scrollToStoredProject = useCallback(() => {
+  const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+  useIsomorphicLayoutEffect(() => {
     if (scrolledRef.current) return;
     if (window.location.pathname !== "/") return;
 
@@ -135,63 +137,29 @@ export default function Projects() {
 
     if (targetY !== null) {
       scrolledRef.current = true;
-      const restoreScroll = () => {
-        if (lenisRef.current) {
-          lenisRef.current.scrollTo(targetY, { immediate: true });
-        } else {
-          window.scrollTo({ top: targetY!, behavior: "instant" });
-        }
-        setTimeout(() => { scrolledRef.current = false; }, 300);
-      };
-      // Restore immediately in next frame
-      requestAnimationFrame(restoreScroll);
-      setTimeout(restoreScroll, 50); // Fallback if Lenis wasn't ready
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(targetY, { immediate: true });
+      } else {
+        window.scrollTo({ top: targetY, behavior: "instant" as any });
+      }
       return;
     }
 
     if (targetId) {
       scrolledRef.current = true;
-      let attempts = 0;
-      const interval = setInterval(() => {
-        attempts++;
-        const el = document.getElementById(`project-${targetId}`);
-        if (el) {
-          clearInterval(interval);
-          if (lenisRef.current) {
-            lenisRef.current.scrollTo(el, {
-              offset: -(window.innerHeight / 2 - el.offsetHeight / 2),
-              immediate: true,
-            });
-          } else {
-            el.scrollIntoView({ block: "center" });
-          }
-          setTimeout(() => { scrolledRef.current = false; }, 300);
-        } else if (attempts >= 10) {
-          clearInterval(interval);
-          scrolledRef.current = false;
+      const el = document.getElementById(`project-${targetId}`);
+      if (el) {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(el, {
+            offset: -(window.innerHeight / 2 - el.offsetHeight / 2),
+            immediate: true,
+          });
+        } else {
+          el.scrollIntoView({ block: "center" });
         }
-      }, 50);
-      return interval;
+      }
     }
   }, []);
-
-  useEffect(() => {
-    // Try on mount
-    const timer = scrollToStoredProject();
-
-    // Poll quickly a few times for instant restoration, but don't overdo it (no 5s polling)
-    let pollCount = 0;
-    const pollInterval = setInterval(() => {
-      pollCount++;
-      scrollToStoredProject();
-      if (pollCount >= 5) clearInterval(pollInterval);
-    }, 50);
-
-    return () => {
-      if (typeof timer === "number") clearInterval(timer);
-      clearInterval(pollInterval);
-    };
-  }, [scrollToStoredProject]);
 
   return (
     <section id="projects" className="relative min-h-screen py-20 md:py-32 flex flex-col items-center">
