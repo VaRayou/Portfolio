@@ -128,10 +128,10 @@ export default function Projects() {
           if (lenisRef.current) {
             lenisRef.current.scrollTo(el, {
               offset: -(window.innerHeight / 2 - el.offsetHeight / 2),
-              duration: 1.2,
+              immediate: true,
             });
           } else {
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.scrollIntoView({ block: "center" });
           }
           // Reset after scroll completes so it can work again next time
           setTimeout(() => { scrolledRef.current = false; }, 2000);

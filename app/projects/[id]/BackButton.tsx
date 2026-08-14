@@ -14,15 +14,19 @@ export default function BackButton({ projectId }: BackButtonProps) {
     try {
       // Skip the intro animation on return
       sessionStorage.setItem("skipIntroNext", "true");
-      // Store which project card to scroll to
+      // Store which project card to scroll to (used as a fallback by Projects.tsx if browser restore fails)
       if (projectId) {
         sessionStorage.setItem("lastViewedProject", projectId);
       }
     } catch {
       // Fallback for private browsing
     }
-    // Navigate back client-side — no hash so browser doesn't auto-scroll to section header
-    router.push("/");
+    // Navigate back using history so that the previous state and scroll position are fully restored
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
 
   return (
