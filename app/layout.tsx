@@ -55,8 +55,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
@@ -76,6 +78,7 @@ export default function RootLayout({
         )}
       >
         {children}
+        {modal}
 
         <Script id="sw-register" strategy="afterInteractive">{`
           if ('serviceWorker' in navigator) {

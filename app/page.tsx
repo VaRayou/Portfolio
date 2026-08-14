@@ -55,7 +55,11 @@ export default function Home() {
         {/* ── Main Content ──────────────────────────── */}
         <motion.main
           className="relative z-10 w-full"
-          initial={{ opacity: 0 }}
+          initial={
+            typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true"
+              ? false
+              : { opacity: 0 }
+          }
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
         >

@@ -8,7 +8,6 @@ export default function Intro() {
   const [isLoading, setIsLoading] = useState(() => {
     try {
       if (typeof window !== "undefined" && sessionStorage.getItem("skipIntroNext") === "true") {
-        sessionStorage.removeItem("skipIntroNext");
         return false;
       }
     } catch {
