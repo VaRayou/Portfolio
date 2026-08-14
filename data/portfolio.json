@@ -6,9 +6,9 @@
     "availability": "Available for new opportunities",
     "stats": [
       { "label": "Years Experience", "value": "1+" },
-      { "label": "Projects Completed", "value": "40+" },
+      { "label": "Projects Completed", "value": "10+" },
       { "label": "Awards Won", "value": "not yet" },
-      { "label": "Happy Clients", "value": "20+" }
+      { "label": "Happy Clients", "value": "1+" }
     ]
   },
   "socials": {
@@ -27,7 +27,18 @@
     "vision": "A web where every interaction brings joy and serves a clear purpose."
   },
   "skills": [
-    "Next.js", "React", "TypeScript", "TailwindCSS", "Framer Motion", "GSAP", "Three.js", "Node.js", "Python", "Supabase", "GraphQL", "Figma"
+    "Next.js",
+    "React",
+    "TypeScript",
+    "TailwindCSS",
+    "Framer Motion",
+    "Php",
+    "Angular",
+    "Node.js",
+    "Python",
+    "Supabase",
+    "GraphQL",
+    "Figma"
   ],
   "experience": [
     {
@@ -186,7 +197,7 @@
       "description": "High-energy kinetic typography and product 3D animation bumpers created for digital broadcast campaigns.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Blander",  "Motion Design"]
+      "technologies": ["Blander", "Motion Design"]
     },
     {
       "id": "proj13",
@@ -252,7 +263,7 @@
       "description": "Bespoke bottle label design featuring gold foil stamping, tactile UV varnish, and custom monogram logo.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": [ "Photoshop"]
+      "technologies": ["Photoshop"]
     },
     {
       "id": "proj19",

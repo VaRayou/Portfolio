@@ -4,8 +4,9 @@ import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-mo
 import portfolioData from "@/data/portfolio.json";
 import Image from "next/image";
 import { ArrowRight, Search, Filter, GitBranch, ExternalLink } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLenis } from "lenis/react";
 import SplitTextReveal from "@/components/SplitTextReveal";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -56,6 +57,10 @@ export default function Projects() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("Projects");
   const router = useRouter();
+  const lenis = useLenis();
+  // Keep a ref so the mount-only useEffect can access the latest lenis instance
+  const lenisRef = useRef<typeof lenis>(null);
+  useEffect(() => { lenisRef.current = lenis; }, [lenis]);
 
   const filteredProjects = portfolioData.projects.filter((p) => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
@@ -67,8 +72,100 @@ export default function Projects() {
   });
 
   const handleNavigate = (id: string) => {
+    try {
+      sessionStorage.setItem("lastViewedProject", id);
+    } catch {
+      // Fallback
+    }
     router.push(`/projects/${id}`);
   };
+
+  // Scroll to a specific project card when returning from the detail page.
+  // Because this component stays mounted during client-side navigation,
+  // a mount-only useEffect won't re-fire. Instead we poll sessionStorage
+  // briefly after the component renders, and also listen for focus events.
+  const scrolledRef = useRef(false);
+
+  const scrollToStoredProject = useCallback(() => {
+    if (scrolledRef.current) return;
+
+    let targetId = "";
+
+    try {
+      const stored = sessionStorage.getItem("lastViewedProject");
+      if (stored) {
+        targetId = stored;
+        sessionStorage.removeItem("lastViewedProject");
+      }
+    } catch {
+      // Fallback for private browsing
+    }
+
+    if (!targetId) {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith("#project-")) {
+        targetId = hash.replace("#project-", "");
+      }
+    }
+
+    if (!targetId) return;
+
+    // Only scroll if we're on the home page
+    if (window.location.pathname !== "/") return;
+
+    scrolledRef.current = true;
+
+    // Wait for the DOM to be ready then scroll
+    const warmup = setTimeout(() => {
+      let attempts = 0;
+      const maxAttempts = 25;
+
+      const interval = setInterval(() => {
+        attempts++;
+        const el = document.getElementById(`project-${targetId}`);
+        if (el) {
+          clearInterval(interval);
+          if (lenisRef.current) {
+            lenisRef.current.scrollTo(el, {
+              offset: -(window.innerHeight / 2 - el.offsetHeight / 2),
+              duration: 1.2,
+            });
+          } else {
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          // Reset after scroll completes so it can work again next time
+          setTimeout(() => { scrolledRef.current = false; }, 2000);
+        } else if (attempts >= maxAttempts) {
+          clearInterval(interval);
+          scrolledRef.current = false;
+          document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }, 200);
+
+    return warmup;
+  }, [lenisRef]);
+
+  useEffect(() => {
+    // Try on mount
+    const timer = scrollToStoredProject();
+
+    // Also poll sessionStorage for a few seconds after mount/re-render.
+    // This handles the case where BackButton sets sessionStorage and calls
+    // router.push("/") — the Projects component is already mounted so the
+    // mount effect already ran, but sessionStorage gets written AFTER.
+    let pollCount = 0;
+    const pollInterval = setInterval(() => {
+      pollCount++;
+      scrollToStoredProject();
+      if (pollCount >= 50) clearInterval(pollInterval); // Stop after 5s
+    }, 100);
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      clearInterval(pollInterval);
+    };
+  }, [scrollToStoredProject]);
 
   return (
     <section id="projects" className="relative min-h-screen py-20 md:py-32 flex flex-col items-center">
@@ -169,6 +266,7 @@ export default function Projects() {
                     {filteredProjects.map((project, i) => (
                       <motion.div
                         key={project.id}
+                        id={`project-${project.id}`}
                         layout
                         initial={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(4px)" }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}

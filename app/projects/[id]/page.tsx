@@ -42,7 +42,7 @@ export default async function ProjectDetails({ params }: { params: Promise<{ id:
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
         
         {/* Back Button */}
-        <BackButton />
+        <BackButton projectId={project.id} />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 lg:gap-20">
           
