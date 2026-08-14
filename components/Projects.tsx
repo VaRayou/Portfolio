@@ -58,9 +58,27 @@ export default function Projects() {
   const [activeTab, setActiveTab] = useState("Projects");
   const router = useRouter();
   const lenis = useLenis();
-  // Keep a ref so the mount-only useEffect can access the latest lenis instance
   const lenisRef = useRef<typeof lenis>(null);
   useEffect(() => { lenisRef.current = lenis; }, [lenis]);
+
+  // Read skip intro flag synchronously on client to prevent animation flash
+  const skipAnimRef = useRef(false);
+  if (typeof window !== "undefined" && !skipAnimRef.current) {
+    try {
+      if (sessionStorage.getItem("skipIntroNext") === "true") {
+        skipAnimRef.current = true;
+      }
+    } catch {}
+  }
+  const skipAnim = skipAnimRef.current;
+
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("skipIntroNext") === "true") {
+        sessionStorage.removeItem("skipIntroNext");
+      }
+    } catch {}
+  }, []);
 
   const filteredProjects = portfolioData.projects.filter((p) => {
     const matchCat = activeCategory === "All" || p.category === activeCategory;
@@ -74,6 +92,8 @@ export default function Projects() {
   const handleNavigate = (id: string) => {
     try {
       sessionStorage.setItem("lastViewedProject", id);
+      // Save exact scroll position for instant restoration
+      sessionStorage.setItem("portfolioScrollY", window.scrollY.toString());
     } catch {
       // Fallback
     }
@@ -88,38 +108,50 @@ export default function Projects() {
 
   const scrollToStoredProject = useCallback(() => {
     if (scrolledRef.current) return;
+    if (window.location.pathname !== "/") return;
 
+    let targetY: number | null = null;
     let targetId = "";
 
     try {
-      const stored = sessionStorage.getItem("lastViewedProject");
-      if (stored) {
-        targetId = stored;
+      const storedY = sessionStorage.getItem("portfolioScrollY");
+      if (storedY) {
+        targetY = parseFloat(storedY);
+        sessionStorage.removeItem("portfolioScrollY");
+      }
+      const storedId = sessionStorage.getItem("lastViewedProject");
+      if (storedId) {
+        targetId = storedId;
         sessionStorage.removeItem("lastViewedProject");
       }
-    } catch {
-      // Fallback for private browsing
-    }
+    } catch {}
 
-    if (!targetId) {
+    if (targetY === null && !targetId) {
       const hash = window.location.hash;
       if (hash && hash.startsWith("#project-")) {
         targetId = hash.replace("#project-", "");
       }
     }
 
-    if (!targetId) return;
+    if (targetY !== null) {
+      scrolledRef.current = true;
+      const restoreScroll = () => {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(targetY, { immediate: true });
+        } else {
+          window.scrollTo({ top: targetY!, behavior: "instant" });
+        }
+        setTimeout(() => { scrolledRef.current = false; }, 300);
+      };
+      // Restore immediately in next frame
+      requestAnimationFrame(restoreScroll);
+      setTimeout(restoreScroll, 50); // Fallback if Lenis wasn't ready
+      return;
+    }
 
-    // Only scroll if we're on the home page
-    if (window.location.pathname !== "/") return;
-
-    scrolledRef.current = true;
-
-    // Wait for the DOM to be ready then scroll
-    const warmup = setTimeout(() => {
+    if (targetId) {
+      scrolledRef.current = true;
       let attempts = 0;
-      const maxAttempts = 25;
-
       const interval = setInterval(() => {
         attempts++;
         const el = document.getElementById(`project-${targetId}`);
@@ -133,36 +165,30 @@ export default function Projects() {
           } else {
             el.scrollIntoView({ block: "center" });
           }
-          // Reset after scroll completes so it can work again next time
-          setTimeout(() => { scrolledRef.current = false; }, 2000);
-        } else if (attempts >= maxAttempts) {
+          setTimeout(() => { scrolledRef.current = false; }, 300);
+        } else if (attempts >= 10) {
           clearInterval(interval);
           scrolledRef.current = false;
-          document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
         }
-      }, 100);
-    }, 200);
-
-    return warmup;
-  }, [lenisRef]);
+      }, 50);
+      return interval;
+    }
+  }, []);
 
   useEffect(() => {
     // Try on mount
     const timer = scrollToStoredProject();
 
-    // Also poll sessionStorage for a few seconds after mount/re-render.
-    // This handles the case where BackButton sets sessionStorage and calls
-    // router.push("/") — the Projects component is already mounted so the
-    // mount effect already ran, but sessionStorage gets written AFTER.
+    // Poll quickly a few times for instant restoration, but don't overdo it (no 5s polling)
     let pollCount = 0;
     const pollInterval = setInterval(() => {
       pollCount++;
       scrollToStoredProject();
-      if (pollCount >= 50) clearInterval(pollInterval); // Stop after 5s
-    }, 100);
+      if (pollCount >= 5) clearInterval(pollInterval);
+    }, 50);
 
     return () => {
-      if (timer) clearTimeout(timer);
+      if (typeof timer === "number") clearInterval(timer);
       clearInterval(pollInterval);
     };
   }, [scrollToStoredProject]);
@@ -205,7 +231,7 @@ export default function Projects() {
           {activeTab === "Projects" && (
             <motion.div
               key="projects"
-              initial={{ opacity: 0 }}
+              initial={skipAnim ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.4 }}
             >
@@ -268,11 +294,11 @@ export default function Projects() {
                         key={project.id}
                         id={`project-${project.id}`}
                         layout
-                        initial={{ opacity: 0, scale: 0.9, y: 30, filter: "blur(4px)" }}
+                        initial={skipAnim ? false : { opacity: 0, scale: 0.9, y: 30, filter: "blur(4px)" }}
                         whileInView={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
                         viewport={{ once: true, margin: "-40px" }}
                         exit={{ opacity: 0, scale: 0.9, y: -10 }}
-                        transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.5, delay: skipAnim ? 0 : i * 0.1, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <Card3D>
                           <div className="glass-card rounded-3xl p-4 flex flex-col group hover:border-white/20 transition-all duration-300 h-full">

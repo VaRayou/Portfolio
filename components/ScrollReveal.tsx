@@ -22,7 +22,10 @@ export default function ScrollReveal({
   className = "",
   once = true,
 }: ScrollRevealProps) {
+  const skipAnimRef = typeof window !== "undefined" ? sessionStorage.getItem("skipIntroNext") === "true" : false;
+
   const getInitialDirection = () => {
+    if (skipAnimRef) return false;
     switch (direction) {
       case "up":
         return { opacity: 0, y: 50, scale: 0.96, filter: "blur(4px)" };
@@ -48,7 +51,7 @@ export default function ScrollReveal({
   if (staggerChildren > 0) {
     return (
       <motion.div
-        initial="hidden"
+        initial={skipAnimRef ? false : "hidden"}
         whileInView="visible"
         viewport={{ once, margin: "-60px" }}
         variants={{
@@ -56,7 +59,7 @@ export default function ScrollReveal({
           visible: {
             transition: {
               staggerChildren,
-              delayChildren: delay,
+              delayChildren: skipAnimRef ? 0 : delay,
             },
           },
         }}
