@@ -185,7 +185,7 @@ export default function About() {
           <ScrollReveal direction="right" duration={0.9} className="flex justify-center lg:justify-end order-1 lg:order-2">
             <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-96 lg:h-96 rounded-full overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(255,255,255,0.06)] group">
               <Image 
-                src="/coverface.JPG" 
+                src="/man3.png" 
                 alt="Portrait"
                 fill
                 className="object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"

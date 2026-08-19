@@ -627,7 +627,7 @@ export default function IDBadge() {
             {/* Clean Portrait Photo with Holographic Accent */}
             <div className="relative w-[135px] h-[135px] rounded-xl overflow-hidden border border-white/20 shadow-2xl my-auto group">
               <Image
-                src="/coverface.JPG"
+                src="/man4.png"
                 alt={portfolioData.personal.name}
                 fill
                 className="object-cover pointer-events-none"
