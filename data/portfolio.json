@@ -76,7 +76,8 @@
       "description": "A high-performance analytics dashboard featuring real-time data visualization and a custom 3D globe component.",
       "liveDemo": "https://khmer-news.onrender.com",
       "github": "https://github.com",
-      "technologies": ["Php", "Bootstrap", "TailwindCSS"]
+      "technologies": ["Php", "Bootstrap", "TailwindCSS"],
+      "keyFeatures": ["Real-time news aggregation", "SEO optimized pages", "Responsive mobile layout", "Admin dashboard"]
     },
     {
       "id": "proj2",
@@ -87,7 +88,8 @@
       "description": "Creative brand identity package, social media poster design, typography, and vector logo design for modern branding.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Photoshop", "Illustrator", "Figma", "Branding"]
+      "technologies": ["Photoshop", "Illustrator", "Figma", "Branding"],
+      "keyFeatures": ["Social media optimized layouts", "Custom typography", "Vector-based assets", "Brand guideline package"]
     },
     {
       "id": "proj3",
@@ -98,7 +100,8 @@
       "description": "Enterprise network configuration, VLAN routing, firewall security, and packet tracing topology design.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Mikrotik", "VLAN", "Routing & Switching", "Security"]
+      "technologies": ["Mikrotik", "VLAN", "Routing & Switching", "Security"],
+      "keyFeatures": ["VLAN segmentation & routing", "Firewall rule configuration", "Packet tracing validation", "Enterprise-grade security"]
     },
     {
       "id": "proj4",
@@ -109,7 +112,8 @@
       "description": "Menu Design,  design, and motion graphics for a modern digital product interface.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Figma", "Illustrator", "After Effects", "UI/UX"]
+      "technologies": ["Figma", "Illustrator", "After Effects", "UI/UX"],
+      "keyFeatures": ["Interactive prototype", "Motion graphics integration", "Print-ready export", "Responsive layout"]
     },
     {
       "id": "proj5",
@@ -120,7 +124,8 @@
       "description": "A modern, responsive portfolio website showcasing my work and skills.",
       "liveDemo": "https://portfolio2-chi-swart.vercel.app/",
       "github": "https://github.com",
-      "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"]
+      "technologies": ["Next.js", "TypeScript", "TailwindCSS", "Framer Motion"],
+      "keyFeatures": ["Smooth page transitions", "Dark mode design", "Fully responsive layout", "Performance optimized"]
     },
     {
       "id": "proj6",
@@ -131,7 +136,8 @@
       "description": "A personal finance management tool that helps users track daily expenses, set savings goals, and visualize spending habits with interactive charts.",
       "liveDemo": "https://mn-daily-management.onrender.com/index.php",
       "github": "https://github.com",
-      "technologies": ["Php", "MySQL", "JavaScript", "Bootstrap"]
+      "technologies": ["Php", "MySQL", "JavaScript", "Bootstrap"],
+      "keyFeatures": ["Expense tracking system", "Savings goal planner", "Interactive spending charts", "Daily transaction history"]
     },
     {
       "id": "proj7",
@@ -142,7 +148,8 @@
       "description": "A comprehensive attendance tracking system for organizations, allowing employees to log their attendance, view schedules, and generate reports.",
       "liveDemo": "https://attendance-management-seven-sigma.vercel.app/login",
       "github": "https://github.com",
-      "technologies": ["Angular", "TypeScript", "Bootstrap", "Node.js"]
+      "technologies": ["Angular", "TypeScript", "Bootstrap", "Node.js"],
+      "keyFeatures": ["Employee check-in/out", "Schedule management", "Report generation", "Role-based access control"]
     },
     {
       "id": "proj8",
@@ -153,7 +160,8 @@
       "description": "Multi-tenant workspace application featuring team collaboration tools, custom data pipelines, and dark mode UI.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["React", "TypeScript", "GraphQL", "TailwindCSS"]
+      "technologies": ["React", "TypeScript", "GraphQL", "TailwindCSS"],
+      "keyFeatures": ["Multi-tenant workspace", "Real-time collaboration", "Custom data pipelines", "Dark mode UI"]
     },
     {
       "id": "proj9",
@@ -164,7 +172,8 @@
       "description": "Futuristic neon concert poster design featuring custom Japanese typography, lighting effects, and vector graphics.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Photoshop", "Illustrator", "Typography"]
+      "technologies": ["Photoshop", "Illustrator", "Typography"],
+      "keyFeatures": ["Neon glow effects", "Custom Japanese typography", "Vector illustration", "Print-ready output"]
     },
     {
       "id": "proj10",
@@ -175,7 +184,8 @@
       "description": "Creative calendar design with 3D renders, custom illustrations, and interactive PDF layouts for print and digital distribution.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["InDesign", "Photoshop", "Branding"]
+      "technologies": ["InDesign", "Photoshop", "Branding"],
+      "keyFeatures": ["3D rendered artwork", "Custom illustrations", "Interactive PDF layout", "Print & digital formats"]
     },
     {
       "id": "proj11",
@@ -186,7 +196,8 @@
       "description": "Bold corporate identity suite including business cards, letterheads, brand guidelines, and vector logo lockups.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Illustrator", "Photoshop", "Vector Art"]
+      "technologies": ["Illustrator", "Photoshop", "Vector Art"],
+      "keyFeatures": ["Complete brand suite", "Vector logo lockups", "Business card & letterhead", "Brand guidelines document"]
     },
     {
       "id": "proj12",
@@ -197,7 +208,8 @@
       "description": "High-energy kinetic typography and product 3D animation bumpers created for digital broadcast campaigns.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Blander", "Motion Design"]
+      "technologies": ["Blander", "Motion Design"],
+      "keyFeatures": ["Kinetic typography", "3D product animation", "Broadcast-ready output", "Dynamic motion graphics"]
     },
     {
       "id": "proj13",
@@ -208,7 +220,8 @@
       "description": "80s inspired album art featuring wireframe grids, chromatic aberration, and vintage halftone textures.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Photoshop", "Illustrator", "Retro Art"]
+      "technologies": ["Photoshop", "Illustrator", "Retro Art"],
+      "keyFeatures": ["80s retro aesthetic", "Wireframe grid design", "Chromatic aberration effects", "Halftone texture overlay"]
     },
     {
       "id": "proj14",
@@ -219,7 +232,8 @@
       "description": "Creative 3D presentation deck for a mobile application showcasing interactive screens and volumetric lighting.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Illustrator", "Photoshop", "UI Design"]
+      "technologies": ["Illustrator", "Photoshop", "UI Design"],
+      "keyFeatures": ["3D presentation deck", "Interactive screen mockups", "Volumetric lighting effects", "Mobile app showcase"]
     },
     {
       "id": "proj15",
@@ -230,7 +244,8 @@
       "description": "High-fidelity UI component design system featuring glassmorphic cards, custom iconography, and micro-interactions.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Figma", "UI/UX", "Design System"]
+      "technologies": ["Figma", "UI/UX", "Design System"],
+      "keyFeatures": ["Glassmorphic UI components", "Custom iconography set", "Micro-interaction specs", "Scalable design system"]
     },
     {
       "id": "proj16",
@@ -241,7 +256,8 @@
       "description": "Editorial print and digital magazine spread featuring asymmetrical grid systems and expressive typography.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["InDesign", "Photoshop"]
+      "technologies": ["InDesign", "Photoshop"],
+      "keyFeatures": ["Asymmetrical grid layout", "Expressive typography", "Print & digital spread", "Editorial art direction"]
     },
     {
       "id": "proj17",
@@ -252,7 +268,8 @@
       "description": "Action-packed promotional graphics, social media key art, and stream overlay templates for esports tournaments.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Photoshop", "Indesign"]
+      "technologies": ["Photoshop", "Indesign"],
+      "keyFeatures": ["Esports promotional graphics", "Social media key art", "Stream overlay templates", "Multi-platform assets"]
     },
     {
       "id": "proj18",
@@ -263,7 +280,8 @@
       "description": "Bespoke bottle label design featuring gold foil stamping, tactile UV varnish, and custom monogram logo.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Photoshop"]
+      "technologies": ["Photoshop"],
+      "keyFeatures": ["Gold foil stamping design", "UV varnish tactile finish", "Custom monogram logo", "Print production ready"]
     },
     {
       "id": "proj19",
@@ -274,7 +292,8 @@
       "description": "Enterprise network configuration with DHCP relay setup, inter-VLAN routing, and switch port security policies.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Mikrotik", "VLAN", "Switching"]
+      "technologies": ["Mikrotik", "VLAN", "Switching"],
+      "keyFeatures": ["DHCP relay configuration", "Inter-VLAN routing setup", "Switch port security", "Network topology design"]
     },
     {
       "id": "proj20",
@@ -285,7 +304,8 @@
       "description": "Advanced inter-VLAN routing configuration with static routes, ACLs, and firewall rules for secure network segmentation.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Mikrotik", "VLAN", "Firewall", "Security"]
+      "technologies": ["Mikrotik", "VLAN", "Firewall", "Security"],
+      "keyFeatures": ["Static route configuration", "ACL policy enforcement", "Firewall rule hardening", "Secure network segmentation"]
     },
     {
       "id": "proj21",
@@ -296,7 +316,8 @@
       "description": "Software-defined WAN deployment optimizing multi-path traffic routing, BGP failover, and cloud connection links.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["SD-WAN", "BGP", "Routing", "Cloud Networks"]
+      "technologies": ["SD-WAN", "BGP", "Routing", "Cloud Networks"],
+      "keyFeatures": ["Multi-path traffic optimization", "BGP failover configuration", "Cloud link integration", "Branch connectivity architecture"]
     },
     {
       "id": "proj22",
@@ -307,7 +328,8 @@
       "description": "Zone-based firewall security design incorporating App-ID rules, WildFire threat prevention, and DNS security.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Palo Alto", "App-ID", "Threat Prevention", "Security"]
+      "technologies": ["Palo Alto", "App-ID", "Threat Prevention", "Security"],
+      "keyFeatures": ["App-ID rule enforcement", "WildFire threat detection", "DNS security policies", "Zone-based firewall design"]
     },
     {
       "id": "proj23",
@@ -318,7 +340,8 @@
       "description": "High-density Wi-Fi 6 enterprise deployment featuring wireless LAN controllers, 802.1X RADIUS authentication, and seamless roaming.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Aruba", "WLC", "Wi-Fi 6", "RADIUS"]
+      "technologies": ["Aruba", "WLC", "Wi-Fi 6", "RADIUS"],
+      "keyFeatures": ["Wi-Fi 6 high-density deployment", "802.1X RADIUS authentication", "Seamless roaming config", "Wireless controller management"]
     },
     {
       "id": "proj24",
@@ -329,7 +352,8 @@
       "description": "Implementation of micro-segmentation and identity-aware proxy policies for secure remote user connectivity.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["ZTNA", "Cloudflare Access", "Identity", "Zero Trust"]
+      "technologies": ["ZTNA", "Cloudflare Access", "Identity", "Zero Trust"],
+      "keyFeatures": ["Micro-segmentation policies", "Identity-aware proxy", "Secure remote access", "Zero Trust enforcement"]
     },
     {
       "id": "proj25",
@@ -340,7 +364,8 @@
       "description": "F5 LTM load balancer cluster setup with custom iRules, SSL offloading, and intelligent health monitor probes.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["F5 BIG-IP", "LTM", "Load Balancing", "SSL"]
+      "technologies": ["F5 BIG-IP", "LTM", "Load Balancing", "SSL"],
+      "keyFeatures": ["Active-passive HA cluster", "Custom iRules scripting", "SSL offloading config", "Health monitor probes"]
     },
     {
       "id": "proj26",
@@ -351,7 +376,8 @@
       "description": "Real-time telemetry dashboard using Grafana, Prometheus, SNMP exporters, and automated Slack alert triggers.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["Grafana", "Prometheus", "SNMP", "Ansible"]
+      "technologies": ["Grafana", "Prometheus", "SNMP", "Ansible"],
+      "keyFeatures": ["Real-time Grafana dashboards", "Prometheus metrics collection", "SNMP exporter integration", "Automated Slack alerting"]
     },
     {
       "id": "proj27",
@@ -362,7 +388,8 @@
       "description": "Hybrid cloud interconnect connecting on-premise data centers to AWS VPC via dedicated Direct Connect & Transit Gateway.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
-      "technologies": ["AWS VPC", "Direct Connect", "Transit Gateway", "BGP"]
+      "technologies": ["AWS VPC", "Direct Connect", "Transit Gateway", "BGP"],
+      "keyFeatures": ["AWS VPC architecture", "Direct Connect setup", "Transit Gateway routing", "Hybrid cloud interconnect"]
     }
   ],
   "certificates": [

@@ -29,13 +29,15 @@ export default async function ProjectDetails({ params }: { params: Promise<{ id:
     notFound();
   }
 
-  // Fallback defaults for missing fields in JSON
-  const keyFeatures = [
-    "Website full animasi",
-    "Keren dan elegant",
-    "Fitur lengkap",
-    "Fully responsive design"
-  ];
+  // Use project's keyFeatures if available, otherwise fallback to defaults
+  const keyFeatures = project.keyFeatures && project.keyFeatures.length > 0
+    ? project.keyFeatures
+    : [
+        "Website full animasi",
+        "Keren dan elegant",
+        "Fitur lengkap",
+        "Fully responsive design"
+      ];
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-20 md:pt-24 pb-20 md:pb-32">
