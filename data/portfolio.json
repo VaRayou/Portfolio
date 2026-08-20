@@ -43,27 +43,27 @@
   "experience": [
     {
       "id": "exp1",
-      "company": "Apple",
-      "role": "Senior Frontend Developer & Graphic Designer & Networking",
-      "period": "2021 - Present",
-      "description": "Leading the frontend team in building immersive web experiences for Apple products. Implemented advanced animations and 3D visualizations to enhance user engagement.",
-      "technologies": ["React", "TypeScript", "Framer Motion", "WebGL"]
+      "company": "School project",
+      "role": "Junior Frontend Developer",
+      "period": "2026 - Present",
+      "description": "Worked on the development of interactive web applications and internal tools, focusing on performance optimization and accessibility.",
+      "technologies": ["React", "TypeScript", "TailwindCSS", "Framer Motion"]
     },
     {
       "id": "exp2",
-      "company": "Stripe",
-      "role": "UI Engineer",
-      "period": "2018 - 2021",
-      "description": "Developed high-performance landing pages and interactive payment flows. Contributed to the core component library used by millions.",
-      "technologies": ["Next.js", "Styled Components", "GSAP"]
+      "company": "School project",
+      "role": "Graphic Design",
+      "period": "2025 - 2026",
+      "description": "Designed marketing materials, UI components, and promotional graphics for various campaigns, ensuring brand consistency and visual appeal.",
+      "technologies": ["Photoshop", "Illustrator", "Figma", "Branding"]
     },
     {
       "id": "exp3",
-      "company": "Linear",
-      "role": "Frontend Developer",
-      "period": "2016 - 2018",
-      "description": "Built the initial marketing site with a focus on keyboard accessibility and dark mode aesthetics.",
-      "technologies": ["React", "CSS Modules"]
+      "company": "School project",
+      "role": "Networking & System Administrator",
+      "period": "2025 - 2026",
+      "description": "Managed and maintained the company's network infrastructure, including routers, switches, and firewalls. Implemented security protocols and monitored system performance.",
+      "technologies": ["Mikrotik", "VLAN", "Routing & Switching", "Security"]
     }
   ],
   "projects": [

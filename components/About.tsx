@@ -152,7 +152,7 @@ export default function About() {
             
             <div className="mt-4 max-w-md mx-auto lg:mx-0">
               <ScrollHighlightText
-                paragraph="Fresh Graduate in MIS (Management Information Systems) from SETEC Institute (Class of 2026) with a strong passion for Frontend Development, Graphic Design, and Networking. Focused on building clean, responsive, and visually compelling websites backed by solid networking fundamentals to deliver optimal digital experiences."
+                paragraph="Year 4 in MIS (Management Information Systems) from SETEC Institute (Class of 2026) with a strong passion for Frontend Development, Graphic Design, and Networking. Focused on building clean, responsive, and visually compelling websites backed by solid networking fundamentals to deliver optimal digital experiences."
                 className="text-sm md:text-base leading-relaxed"
               />
             </div>
