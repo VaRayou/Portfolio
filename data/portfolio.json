@@ -102,11 +102,11 @@
     },
     {
       "id": "proj4",
-      "title": "UI/UX & Motion Graphics Suite",
+      "title": "Menu Design",
       "category": "Graphic Design",
       "year": "2026",
-      "image": "/uidesign.png",
-      "description": "Modern vector design assets, visual mockups, aesthetic typography layouts, and logo animation concepts.",
+      "image": "/menu.PNG",
+      "description": "Menu Design,  design, and motion graphics for a modern digital product interface.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
       "technologies": ["Figma", "Illustrator", "After Effects", "UI/UX"]
@@ -190,10 +190,10 @@
     },
     {
       "id": "proj12",
-      "title": "3d Motion Graphics ",
+      "title": "UI/UX Design & Motion Graphics",
       "category": "Graphic Design",
       "year": "2026",
-      "image": "/orangeposblander.png",
+      "image": "/uidesign.png",
       "description": "High-energy kinetic typography and product 3D animation bumpers created for digital broadcast campaigns.",
       "liveDemo": "https://example.com",
       "github": "https://github.com",
