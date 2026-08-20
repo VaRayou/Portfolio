@@ -9,9 +9,9 @@ import SplitTextReveal from "@/components/SplitTextReveal";
 import ScrambleText from "@/components/ScrambleText";
 import ScrollReveal from "@/components/ScrollReveal";
 
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "service_ojqtqbt";
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "template_igym9sk";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "hfkKt--5JyiQpH0eM";
 
 export default function Contact() {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -23,24 +23,16 @@ export default function Contact() {
     setFormStatus("submitting");
 
     try {
-      if (
-        EMAILJS_SERVICE_ID !== "YOUR_SERVICE_ID" &&
-        EMAILJS_TEMPLATE_ID !== "YOUR_TEMPLATE_ID" &&
-        EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY"
-      ) {
-        await emailjs.sendForm(
-          EMAILJS_SERVICE_ID,
-          EMAILJS_TEMPLATE_ID,
-          formRef.current,
-          EMAILJS_PUBLIC_KEY
-        );
-      } else {
-        await new Promise((r) => setTimeout(r, 1500));
-      }
+      await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        EMAILJS_PUBLIC_KEY
+      );
       setFormStatus("success");
-      formRef.current?.reset();
+      formRef.current.reset();
     } catch (err) {
-      console.error(err);
+      console.error("EmailJS Error:", err);
       setFormStatus("error");
     }
   };
